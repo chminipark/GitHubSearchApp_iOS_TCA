@@ -21,7 +21,7 @@ GitHub API를 활용한 깃헙 레포 검색 앱
 ![GitHubSearchAppgif](https://user-images.githubusercontent.com/77793412/201511799-21c0a681-9e9f-40b0-b3e6-2e5855c8df95.gif)
 
 # Library
-> [TCA](https://github.com/pointfreeco/swift-composable-architecture), 
+> [TCA](https://github.com/pointfreeco/swift-composable-architecture)
 
 # Rules
 - [Swift Style Guide](https://github.com/airbnb/swift)
