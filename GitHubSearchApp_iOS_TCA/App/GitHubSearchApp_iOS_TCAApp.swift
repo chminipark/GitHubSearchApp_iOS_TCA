@@ -9,9 +9,9 @@ import SwiftUI
 
 @main
 struct GitHubSearchApp_iOS_TCAApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
+  var body: some Scene {
+    WindowGroup {
+      GitHubSearchView()
     }
+  }
 }
