@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 @main
 struct GitHubSearchApp_iOS_TCAApp: App {
   var body: some Scene {
     WindowGroup {
-      GitHubSearchView()
+      RootView()
     }
   }
 }
