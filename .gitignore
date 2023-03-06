@@ -98,4 +98,12 @@ iOSInjectionProject/
 /*.gcno
 **/xcshareddata/WorkspaceSettings.xcsettings
 
-# End of https://www.toptal.com/developers/gitignore/api/xcode,swift
+### SwiftPackageManager ###
+Packages
+.build/
+xcuserdata
+DerivedData/
+*.xcodeproj
+
+
+# End of https://www.toptal.com/developers/gitignore/api/swiftpackagemanager
