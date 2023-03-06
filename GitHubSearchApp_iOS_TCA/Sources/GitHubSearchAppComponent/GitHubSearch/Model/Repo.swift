@@ -7,15 +7,17 @@
 
 import Foundation
 
-struct Repo: Identifiable {
-  let name: String
-  let description: String
-  let htmlURL: String
+struct Repo: Equatable, Identifiable {
+  var name: String
+  var description: String
+  var htmlURL: String
   var id: String { self.htmlURL }
   
-  static func mock(idx: Int = 1) -> Repo {
-    self.init(name: "name : \(idx)",
-              description: "description : \(idx)",
-              htmlURL: "htmlURL : \(idx)")
+  static func mock(_ count: Int = 20) -> [Repo] {
+    (1...count).map { index in
+      Repo(name: "name : \(index)",
+           description: "description : \(index)",
+           htmlURL: "htmlURL : \(index)")
+    }
   }
 }

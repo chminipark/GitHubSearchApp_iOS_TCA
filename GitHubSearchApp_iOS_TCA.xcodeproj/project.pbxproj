@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BD2F42BE29AE1B24004766A4 /* GitHubSearchViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2F42BD29AE1B24004766A4 /* GitHubSearchViewTests.swift */; };
 		BD537BA229A8EAE70024A871 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD537BA129A8EAE70024A871 /* RootView.swift */; };
 		BD537BD529A8F7240024A871 /* GitHubSearchStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD537BD429A8F7240024A871 /* GitHubSearchStoreTests.swift */; };
 		BD55EF4F29A60EBE006E740D /* GitHubSearchApp_iOS_TCAApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD55EF4E29A60EBE006E740D /* GitHubSearchApp_iOS_TCAApp.swift */; };
@@ -29,6 +30,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BD2F42BD29AE1B24004766A4 /* GitHubSearchViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubSearchViewTests.swift; sourceTree = "<group>"; };
 		BD537BA129A8EAE70024A871 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		BD537BCB29A8F51D0024A871 /* GitHubSearchAppComponentTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GitHubSearchAppComponentTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD537BD429A8F7240024A871 /* GitHubSearchStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubSearchStoreTests.swift; sourceTree = "<group>"; };
@@ -60,6 +62,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BD2F42BC29AE1AF3004766A4 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BD2F42BD29AE1B24004766A4 /* GitHubSearchViewTests.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		BD537B9E29A8E9950024A871 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -130,6 +140,7 @@
 		BD537BB529A8F2F00024A871 /* GitHubSearch */ = {
 			isa = PBXGroup;
 			children = (
+				BD2F42BC29AE1AF3004766A4 /* Views */,
 				BD537BB629A8F3310024A871 /* Store */,
 			);
 			path = GitHubSearch;
@@ -304,6 +315,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BD537BD529A8F7240024A871 /* GitHubSearchStoreTests.swift in Sources */,
+				BD2F42BE29AE1B24004766A4 /* GitHubSearchViewTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
