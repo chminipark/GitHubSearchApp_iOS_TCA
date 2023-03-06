@@ -10,13 +10,6 @@ import ComposableArchitecture
 
 struct RootView: View {
   var body: some View {
-    NavigationView {
-      GitHubSearchView(
-        store: Store(
-          initialState: GitHubSearchStore.State(),
-          reducer: GitHubSearchStore()
-        )
-      )
-    }
+    ContentsTabView()
   }
 }

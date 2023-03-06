@@ -13,18 +13,20 @@ struct GitHubSearchView: View {
   
   var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
-      List {
-        ForEach(viewStore.searchResults) { repo in
-          Text(repo.name)
+      NavigationView {
+        List {
+          ForEach(viewStore.searchResults) { repo in
+            Text(repo.name)
+          }
         }
-      }
-      .navigationTitle("GitHubSearch")
-      .searchable(text: viewStore.binding(\.$searchQuery))
-      .task(id: viewStore.searchQuery) {
-        do {
-          try await Task.sleep(for: .seconds(1))
-          viewStore.send(.searchRepo)
-        } catch {
+        .navigationTitle("GitHubSearch")
+        .searchable(text: viewStore.binding(\.$searchQuery))
+        .task(id: viewStore.searchQuery) {
+          do {
+            try await Task.sleep(for: .seconds(1))
+            viewStore.send(.searchRepo)
+          } catch {
+          }
         }
       }
     }
