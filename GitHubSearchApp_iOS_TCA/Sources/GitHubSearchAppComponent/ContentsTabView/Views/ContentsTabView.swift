@@ -11,7 +11,7 @@ import ComposableArchitecture
 struct ContentsTabView: View {
   var body: some View {
     TabView {
-      GitHubSearchView(
+      GitHubSearchListView(
         store: Store(
           initialState: GitHubSearchStore.State(),
           reducer: GitHubSearchStore()

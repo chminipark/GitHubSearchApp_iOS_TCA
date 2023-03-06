@@ -58,7 +58,7 @@ extension GitHubSearchClient: DependencyKey {
   static let liveValue = Self(
     search: { query in
       try await Task.sleep(for: .seconds(1))
-      return Repo.mock(query.count+3)
+      return Repo.mockRepoList(query.count+3)
     }
   )
   

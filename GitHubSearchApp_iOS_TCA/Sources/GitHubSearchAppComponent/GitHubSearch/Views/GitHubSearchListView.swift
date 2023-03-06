@@ -1,5 +1,5 @@
 //
-//  GitHubSearchView.swift
+//  GitHubSearchListView.swift
 //  GitHubSearchApp_iOS_TCA
 //
 //  Created by minii on 2023/02/23.
@@ -8,7 +8,7 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct GitHubSearchView: View {
+struct GitHubSearchListView: View {
   let store: StoreOf<GitHubSearchStore>
   
   var body: some View {
@@ -16,7 +16,7 @@ struct GitHubSearchView: View {
       NavigationView {
         List {
           ForEach(viewStore.searchResults) { repo in
-            Text(repo.name)
+            GitHubSearchListRowView(repo: repo)
           }
         }
         .navigationTitle("GitHubSearch")
@@ -35,13 +35,11 @@ struct GitHubSearchView: View {
 
 struct GitHubSearchView_Previews: PreviewProvider {
   static var previews: some View {
-    NavigationView {
-      GitHubSearchView(
+      GitHubSearchListView(
         store: Store(
           initialState: GitHubSearchStore.State(),
           reducer: GitHubSearchStore()
         )
       )
-    }
   }
 }

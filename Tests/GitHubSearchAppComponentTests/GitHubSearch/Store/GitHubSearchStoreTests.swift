@@ -30,7 +30,7 @@ final class GitHubSearchStoreTests: XCTestCase {
     let store = TestStore(initialState: GitHubSearchStore.State(),
                           reducer: GitHubSearchStore()) { testDependency in
       testDependency.gitHubSearchClient.search = { _ in
-        return Repo.mock(testSearchText.count)
+        return Repo.mockRepoList(testSearchText.count)
       }
     }
     
@@ -41,9 +41,9 @@ final class GitHubSearchStoreTests: XCTestCase {
     await store.send(.searchRepo)
     
     await store.receive(.searchResponse(.success(
-      Repo.mock(testSearchText.count)
+      Repo.mockRepoList(testSearchText.count)
     ))) {
-      $0.searchResults = Repo.mock(testSearchText.count)
+      $0.searchResults = Repo.mockRepoList(testSearchText.count)
     }
   }
 }
