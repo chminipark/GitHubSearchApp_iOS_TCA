@@ -20,7 +20,7 @@ struct ContentsTabView: View {
       .tabItem {
         VStack {
           Image(systemName: "doc.text")
-          Text("Repo")
+          Text("Repository")
         }
       }
       
@@ -34,12 +34,3 @@ struct ContentsTabView: View {
     }
   }
 }
-
-
-// Repo
-// doc.text
-// doc.text.fill
-
-//Favorite
-//bookmark
-//bookmark.fill
