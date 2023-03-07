@@ -29,6 +29,8 @@
 		BD66F98629B766B400313967 /* SearchRepoResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD66F98529B766B400313967 /* SearchRepoResponseDTO.swift */; };
 		BD66F98829B7687900313967 /* APIEndpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD66F98729B7687900313967 /* APIEndpoints.swift */; };
 		BD66F98B29B76ADD00313967 /* APIEndpointsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD66F98A29B76ADD00313967 /* APIEndpointsTests.swift */; };
+		BD66F98F29B7A04600313967 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD66F98E29B7A04600313967 /* MockURLSession.swift */; };
+		BD66F99129B7A05700313967 /* APIMockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD66F99029B7A05700313967 /* APIMockData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,7 +46,7 @@
 /* Begin PBXFileReference section */
 		BD2F42BD29AE1B24004766A4 /* GitHubSearchViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubSearchViewTests.swift; sourceTree = "<group>"; };
 		BD537BA129A8EAE70024A871 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
-		BD537BCB29A8F51D0024A871 /* GitHubSearchAppComponentTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GitHubSearchAppComponentTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD537BCB29A8F51D0024A871 /* GitHubSearchApp_iOS_TCA_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GitHubSearchApp_iOS_TCA_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD537BD429A8F7240024A871 /* GitHubSearchStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubSearchStoreTests.swift; sourceTree = "<group>"; };
 		BD55EF4B29A60EBE006E740D /* GitHubSearchApp_iOS_TCA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitHubSearchApp_iOS_TCA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD55EF4E29A60EBE006E740D /* GitHubSearchApp_iOS_TCAApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubSearchApp_iOS_TCAApp.swift; sourceTree = "<group>"; };
@@ -65,6 +67,8 @@
 		BD66F98529B766B400313967 /* SearchRepoResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRepoResponseDTO.swift; sourceTree = "<group>"; };
 		BD66F98729B7687900313967 /* APIEndpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndpoints.swift; sourceTree = "<group>"; };
 		BD66F98A29B76ADD00313967 /* APIEndpointsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndpointsTests.swift; sourceTree = "<group>"; };
+		BD66F98E29B7A04600313967 /* MockURLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLSession.swift; sourceTree = "<group>"; };
+		BD66F99029B7A05700313967 /* APIMockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIMockData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -206,7 +210,7 @@
 			isa = PBXGroup;
 			children = (
 				BD55EF4B29A60EBE006E740D /* GitHubSearchApp_iOS_TCA.app */,
-				BD537BCB29A8F51D0024A871 /* GitHubSearchAppComponentTests.xctest */,
+				BD537BCB29A8F51D0024A871 /* GitHubSearchApp_iOS_TCA_Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -351,6 +355,8 @@
 			isa = PBXGroup;
 			children = (
 				BD66F98A29B76ADD00313967 /* APIEndpointsTests.swift */,
+				BD66F98E29B7A04600313967 /* MockURLSession.swift */,
+				BD66F99029B7A05700313967 /* APIMockData.swift */,
 			);
 			path = APIEndpointsTests;
 			sourceTree = "<group>";
@@ -358,9 +364,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		BD537BCA29A8F51D0024A871 /* GitHubSearchAppComponentTests */ = {
+		BD537BCA29A8F51D0024A871 /* GitHubSearchApp_iOS_TCA_Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BD537BD129A8F51D0024A871 /* Build configuration list for PBXNativeTarget "GitHubSearchAppComponentTests" */;
+			buildConfigurationList = BD537BD129A8F51D0024A871 /* Build configuration list for PBXNativeTarget "GitHubSearchApp_iOS_TCA_Tests" */;
 			buildPhases = (
 				BD537BC729A8F51D0024A871 /* Sources */,
 				BD537BC829A8F51D0024A871 /* Frameworks */,
@@ -371,9 +377,9 @@
 			dependencies = (
 				BD537BD029A8F51D0024A871 /* PBXTargetDependency */,
 			);
-			name = GitHubSearchAppComponentTests;
+			name = GitHubSearchApp_iOS_TCA_Tests;
 			productName = GitHubSearchAppComponentTests;
-			productReference = BD537BCB29A8F51D0024A871 /* GitHubSearchAppComponentTests.xctest */;
+			productReference = BD537BCB29A8F51D0024A871 /* GitHubSearchApp_iOS_TCA_Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		BD55EF4A29A60EBE006E740D /* GitHubSearchApp_iOS_TCA */ = {
@@ -433,7 +439,7 @@
 			projectRoot = "";
 			targets = (
 				BD55EF4A29A60EBE006E740D /* GitHubSearchApp_iOS_TCA */,
-				BD537BCA29A8F51D0024A871 /* GitHubSearchAppComponentTests */,
+				BD537BCA29A8F51D0024A871 /* GitHubSearchApp_iOS_TCA_Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -463,7 +469,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				BD537BD529A8F7240024A871 /* GitHubSearchStoreTests.swift in Sources */,
+				BD66F98F29B7A04600313967 /* MockURLSession.swift in Sources */,
 				BD2F42BE29AE1B24004766A4 /* GitHubSearchViewTests.swift in Sources */,
+				BD66F99129B7A05700313967 /* APIMockData.swift in Sources */,
 				BD66F98B29B76ADD00313967 /* APIEndpointsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -736,7 +744,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		BD537BD129A8F51D0024A871 /* Build configuration list for PBXNativeTarget "GitHubSearchAppComponentTests" */ = {
+		BD537BD129A8F51D0024A871 /* Build configuration list for PBXNativeTarget "GitHubSearchApp_iOS_TCA_Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BD537BD229A8F51D0024A871 /* Debug */,
