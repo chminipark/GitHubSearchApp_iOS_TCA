@@ -13,13 +13,13 @@ struct GitHubSearchStore: ReducerProtocol {
   
   struct State: Equatable {
     @BindingState var searchQuery = ""
-    var searchResults: [Repo] = []
+    var searchResults: [Repository] = []
   }
   
   enum Action: BindableAction, Equatable {
     case binding(BindingAction<State>)
     case searchRepo
-    case searchResponse(TaskResult<[Repo]>)
+    case searchResponse(TaskResult<[Repository]>)
   }
   
   var body: some ReducerProtocol<State, Action> {
@@ -51,14 +51,14 @@ struct GitHubSearchStore: ReducerProtocol {
 // MARK: - API client interface
 
 struct GitHubSearchClient {
-  var search: @Sendable (String) async throws -> [Repo]
+  var search: @Sendable (String) async throws -> [Repository]
 }
 
 extension GitHubSearchClient: DependencyKey {
   static let liveValue = Self(
     search: { query in
       try await Task.sleep(for: .seconds(1))
-      return Repo.mockRepoList(query.count+3)
+      return Repository.mockRepoList(query.count+3)
     }
   )
   

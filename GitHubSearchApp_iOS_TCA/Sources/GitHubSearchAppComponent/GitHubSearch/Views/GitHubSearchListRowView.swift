@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct GitHubSearchListRowView: View {
-  let repo: Repo
+  let repository: Repository
   
   var body: some View {
     HStack {
       VStack(alignment: .leading) {
-        Text(repo.name)
+        Text(repository.name)
           .font(.title.bold())
-        Text(repo.description)
+        Text(repository.description)
       }
       
       Spacer()
@@ -27,7 +27,7 @@ struct GitHubSearchListRowView: View {
           Image(systemName: "star")
         }
         .buttonStyle(.borderless)
-        Text("\(repo.starCount)")
+        Text("\(repository.starCount)")
       }
     }
   }
@@ -35,6 +35,6 @@ struct GitHubSearchListRowView: View {
 
 struct GitHubSearchListRowView_Previews: PreviewProvider {
   static var previews: some View {
-    GitHubSearchListRowView(repo: .mock())
+    GitHubSearchListRowView(repository: .mock())
   }
 }

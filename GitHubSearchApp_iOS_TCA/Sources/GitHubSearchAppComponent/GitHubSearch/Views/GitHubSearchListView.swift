@@ -16,7 +16,7 @@ struct GitHubSearchListView: View {
       NavigationView {
         List {
           ForEach(viewStore.searchResults) { repo in
-            GitHubSearchListRowView(repo: repo)
+            GitHubSearchListRowView(repository: repo)
           }
         }
         .navigationTitle("GitHubSearch")
