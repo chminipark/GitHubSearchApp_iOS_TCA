@@ -18,6 +18,17 @@ struct GitHubSearchListView: View {
           ForEach(viewStore.searchResults) { repo in
             GitHubSearchListRowView(repository: repo)
           }
+          
+          if !viewStore.searchResults.isEmpty {
+            HStack {
+              Spacer()
+              ProgressView()
+                .onAppear {
+                  viewStore.send(.paginationRepo)
+                }
+              Spacer()
+            }
+          }
         }
         .navigationTitle("GitHubSearch")
         .searchable(text: viewStore.binding(\.$searchQuery))

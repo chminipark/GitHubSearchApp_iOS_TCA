@@ -14,8 +14,6 @@ protocol URLSessionable {
 extension URLSession: URLSessionable {}
 
 
-
-
 protocol Provider {
   func request<E: RequestResponsable, R: Decodable>(endpoint: E)
   async -> Result<R, NetworkError>
