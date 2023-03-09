@@ -34,7 +34,7 @@ struct GitHubSearchStore: ReducerProtocol {
         }
         return .task { [query = state.searchQuery] in
           await .searchResponse(TaskResult {
-            try await self.gitHubSearchClient.search(query)
+            await self.gitHubSearchClient.search(query)
           })
         }
       case .searchResponse(.success(let response)):
@@ -51,14 +51,22 @@ struct GitHubSearchStore: ReducerProtocol {
 // MARK: - API client interface
 
 struct GitHubSearchClient {
-  var search: @Sendable (String) async throws -> [Repository]
+  var search: @Sendable (String) async -> [Repository]
 }
 
 extension GitHubSearchClient: DependencyKey {
   static let liveValue = Self(
     search: { query in
-      try await Task.sleep(for: .seconds(1))
-      return Repository.mockRepoList(query.count+3)
+      let searchRepoRequestDTO = SearchRepoRequestDTO(searchText: query, currentPage: 0)
+      let endpoint = APIEndpoints.searchRepo(with: searchRepoRequestDTO)
+      let result = await ProviderImpl.shared.request(endpoint: endpoint)
+      switch result {
+      case .success(let response):
+        return response.toDomain()
+      case .failure(let error):
+        print(error.description)
+        return []
+      }
     }
   )
   
