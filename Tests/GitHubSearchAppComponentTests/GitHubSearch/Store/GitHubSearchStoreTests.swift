@@ -55,7 +55,7 @@ final class GitHubSearchStoreTests: XCTestCase {
     let testSearchText = "123"
     let mockRepoList = Repository.mockRepoList(testSearchText.count)
     let store = TestStore(initialState: GitHubSearchStore.State(searchQuery: testSearchText,
-                                                                currentPage: 1,
+                                                                currentPage: 2,
                                                                 searchResults: mockRepoList
                                                                ),
                           reducer: GitHubSearchStore()) { testDependency in
@@ -67,7 +67,7 @@ final class GitHubSearchStoreTests: XCTestCase {
     // then
     await store.send(.paginationRepo) {
       $0.isLoading = true
-      $0.currentPage = 2
+      $0.currentPage = 3
     }
     
     await store.receive(.paginationResponse(.success(mockRepoList))) {

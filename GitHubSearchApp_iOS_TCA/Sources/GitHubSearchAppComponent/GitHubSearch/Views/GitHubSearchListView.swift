@@ -24,7 +24,7 @@ struct GitHubSearchListView: View {
               Spacer()
               ProgressView()
                 .onAppear {
-                  print("execute pagination")
+                  viewStore.send(.paginationRepo)
                 }
               Spacer()
             }

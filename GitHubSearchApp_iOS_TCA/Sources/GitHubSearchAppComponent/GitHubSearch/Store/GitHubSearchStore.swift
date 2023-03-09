@@ -13,7 +13,7 @@ struct GitHubSearchStore: ReducerProtocol {
   
   struct State: Equatable {
     @BindingState var searchQuery = ""
-    var currentPage = 0
+    var currentPage = 1
     var isLoading = false
     var searchResults: [Repository] = []
   }
@@ -37,11 +37,11 @@ struct GitHubSearchStore: ReducerProtocol {
         guard !state.searchQuery.isEmpty else {
           return .none
         }
-        state.currentPage = 0
+        state.currentPage = 1
         state.isLoading = true
         return .task { [query = state.searchQuery] in
           await .searchResponse(TaskResult {
-            await self.gitHubSearchClient.fetchData(query, 0)
+            await self.gitHubSearchClient.fetchData(query, 1)
           })
         }
         
