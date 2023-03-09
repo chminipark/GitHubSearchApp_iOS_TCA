@@ -22,8 +22,8 @@ struct GitHubSearchStore: ReducerProtocol {
     case binding(BindingAction<State>)
     case searchRepo
     case searchResponse(TaskResult<[Repository]>)
-//    case paginationRepo
-//    case paginationResponse(TaskResult<[Repository]>)
+    case paginationRepo
+    case paginationResponse(TaskResult<[Repository]>)
   }
   
   var body: some ReducerProtocol<State, Action> {
@@ -52,6 +52,28 @@ struct GitHubSearchStore: ReducerProtocol {
         
       case .searchResponse(.failure):
         print(".searchResponse Error")
+        state.isLoading = false
+        return .none
+        
+      case .paginationRepo:
+        guard !state.searchResults.isEmpty else {
+          return .none
+        }
+        state.currentPage += 1
+        state.isLoading = true
+        return .task { [query = state.searchQuery, page = state.currentPage] in
+          await .paginationResponse(TaskResult {
+            await self.gitHubSearchClient.fetchData(query, page)
+          })
+        }
+        
+      case .paginationResponse(.success(let response)):
+        state.searchResults += response
+        state.isLoading = false
+        return .none
+        
+      case .paginationResponse(.failure):
+        print(".paginationResponse Error")
         state.isLoading = false
         return .none
       }
