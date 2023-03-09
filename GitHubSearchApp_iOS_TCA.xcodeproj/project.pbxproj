@@ -102,7 +102,6 @@
 			isa = PBXGroup;
 			children = (
 				BD537BA629A8EB960024A871 /* App */,
-				BD66F97E29B7666100313967 /* Data */,
 				BD66F96F29B61AE800313967 /* Infrastructure */,
 				BD537B9F29A8E9BF0024A871 /* GitHubSearchAppComponent */,
 			);
@@ -130,7 +129,7 @@
 		BD537BA329A8EB6C0024A871 /* GitHubSearch */ = {
 			isa = PBXGroup;
 			children = (
-				BD5CCE9C29ACE7E200A7FC9E /* Model */,
+				BD66F97E29B7666100313967 /* Data */,
 				BD537BA529A8EB720024A871 /* Views */,
 				BD537BA429A8EB6F0024A871 /* Store */,
 			);
@@ -320,6 +319,7 @@
 		BD66F97E29B7666100313967 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				BD5CCE9C29ACE7E200A7FC9E /* Model */,
 				BD66F97F29B7666C00313967 /* Network */,
 			);
 			path = Data;
