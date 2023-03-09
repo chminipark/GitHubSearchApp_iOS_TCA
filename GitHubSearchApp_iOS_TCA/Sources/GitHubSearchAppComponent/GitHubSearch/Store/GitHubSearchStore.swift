@@ -13,6 +13,8 @@ struct GitHubSearchStore: ReducerProtocol {
   
   struct State: Equatable {
     @BindingState var searchQuery = ""
+    var currentPage = 0
+    var isLoading = false
     var searchResults: [Repository] = []
   }
   
@@ -20,6 +22,8 @@ struct GitHubSearchStore: ReducerProtocol {
     case binding(BindingAction<State>)
     case searchRepo
     case searchResponse(TaskResult<[Repository]>)
+//    case paginationRepo
+//    case paginationResponse(TaskResult<[Repository]>)
   }
   
   var body: some ReducerProtocol<State, Action> {
@@ -28,20 +32,27 @@ struct GitHubSearchStore: ReducerProtocol {
       switch action {
       case .binding:
         return .none
+        
       case .searchRepo:
         guard !state.searchQuery.isEmpty else {
           return .none
         }
+        state.currentPage = 0
+        state.isLoading = true
         return .task { [query = state.searchQuery] in
           await .searchResponse(TaskResult {
-            await self.gitHubSearchClient.search(query)
+            await self.gitHubSearchClient.fetchData(query, 0)
           })
         }
+        
       case .searchResponse(.success(let response)):
         state.searchResults = response
+        state.isLoading = false
         return .none
+        
       case .searchResponse(.failure):
         print(".searchResponse Error")
+        state.isLoading = false
         return .none
       }
     }
@@ -51,13 +62,13 @@ struct GitHubSearchStore: ReducerProtocol {
 // MARK: - API client interface
 
 struct GitHubSearchClient {
-  var search: @Sendable (String) async -> [Repository]
+  var fetchData: @Sendable (String, Int) async -> [Repository]
 }
 
 extension GitHubSearchClient: DependencyKey {
   static let liveValue = Self(
-    search: { query in
-      let searchRepoRequestDTO = SearchRepoRequestDTO(searchText: query, currentPage: 0)
+    fetchData: { query, page in
+      let searchRepoRequestDTO = SearchRepoRequestDTO(searchText: query, currentPage: page)
       let endpoint = APIEndpoints.searchRepo(with: searchRepoRequestDTO)
       let result = await ProviderImpl.shared.request(endpoint: endpoint)
       switch result {
@@ -71,7 +82,7 @@ extension GitHubSearchClient: DependencyKey {
   )
   
   static let testValue = Self(
-    search: unimplemented("\(Self.self) testValue of search")
+    fetchData: unimplemented("\(Self.self) testValue of search")
   )
 }
 

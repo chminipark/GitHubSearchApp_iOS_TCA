@@ -27,9 +27,10 @@ final class GitHubSearchStoreTests: XCTestCase {
   func testSearchRepo() async {
     // given, when
     let testSearchText = "123"
+    
     let store = TestStore(initialState: GitHubSearchStore.State(),
                           reducer: GitHubSearchStore()) { testDependency in
-      testDependency.gitHubSearchClient.search = { _ in
+      testDependency.gitHubSearchClient.fetchData = { _, _ in
         return Repository.mockRepoList(testSearchText.count)
       }
     }
@@ -38,12 +39,15 @@ final class GitHubSearchStoreTests: XCTestCase {
       $0.searchQuery = testSearchText
     }
     
-    await store.send(.searchRepo)
+    await store.send(.searchRepo) {
+      $0.isLoading = true
+    }
     
     await store.receive(.searchResponse(.success(
       Repository.mockRepoList(testSearchText.count)
     ))) {
       $0.searchResults = Repository.mockRepoList(testSearchText.count)
+      $0.isLoading = false
     }
   }
 }
