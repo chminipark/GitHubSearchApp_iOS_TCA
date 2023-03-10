@@ -16,7 +16,11 @@ struct GitHubSearchListView: View {
       NavigationView {
         List {
           ForEach(viewStore.searchResults) { repo in
-            GitHubSearchListRowView(repository: repo)
+            GitHubSearchListRowView(
+              store: Store(initialState: GitHubSearchListRowStore.State(),
+                           reducer: GitHubSearchListRowStore()),
+              repository: repo
+            )
           }
           
           if !viewStore.searchResults.isEmpty {
@@ -46,11 +50,11 @@ struct GitHubSearchListView: View {
 
 struct GitHubSearchView_Previews: PreviewProvider {
   static var previews: some View {
-      GitHubSearchListView(
-        store: Store(
-          initialState: GitHubSearchStore.State(),
-          reducer: GitHubSearchStore()
-        )
+    GitHubSearchListView(
+      store: Store(
+        initialState: GitHubSearchStore.State(),
+        reducer: GitHubSearchStore()
       )
+    )
   }
 }
