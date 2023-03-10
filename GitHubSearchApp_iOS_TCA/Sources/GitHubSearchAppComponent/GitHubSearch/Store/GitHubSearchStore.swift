@@ -15,7 +15,7 @@ struct GitHubSearchStore: ReducerProtocol {
     @BindingState var searchQuery = ""
     var currentPage = 1
     var isLoading = false
-    var searchResults: [Repository] = []
+    var searchResults: IdentifiedArrayOf<Repository> = []
   }
   
   enum Action: BindableAction, Equatable {
@@ -46,7 +46,8 @@ struct GitHubSearchStore: ReducerProtocol {
         }
         
       case .searchResponse(.success(let response)):
-        state.searchResults = response
+        state.searchResults = []
+        state.searchResults.append(contentsOf: response)
         state.isLoading = false
         return .none
         
