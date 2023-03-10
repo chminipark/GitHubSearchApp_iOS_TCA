@@ -10,15 +10,14 @@ import ComposableArchitecture
 
 struct GitHubSearchListRowView: View {
   let store: StoreOf<GitHubSearchListRowStore>
-  let repository: Repository
   
   var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       HStack {
         VStack(alignment: .leading) {
-          Text(repository.name)
+          Text(viewStore.repo.name)
             .font(.title.bold())
-          Text(repository.description)
+          Text(viewStore.repo.description)
         }
         
         Spacer()
@@ -30,7 +29,7 @@ struct GitHubSearchListRowView: View {
             Image(systemName: viewStore.starButtonState ? "star.fill" : "star")
           }
           .buttonStyle(.borderless)
-          Text("\(repository.starCount)")
+          Text("\(viewStore.repo.starCount)")
         }
       }
       .onChange(of: viewStore.starButtonState) { newValue in
@@ -42,6 +41,7 @@ struct GitHubSearchListRowView: View {
 
 struct GitHubSearchListRowStore: ReducerProtocol {
   struct State: Equatable {
+    var repo: Repository
     var starButtonState = false
   }
   
@@ -60,6 +60,11 @@ struct GitHubSearchListRowStore: ReducerProtocol {
 
 struct GitHubSearchListRowView_Previews: PreviewProvider {
   static var previews: some View {
-    GitHubSearchListRowView(store: Store(initialState: GitHubSearchListRowStore.State(), reducer: GitHubSearchListRowStore()), repository: .mock())
+    GitHubSearchListRowView(
+      store: Store(
+        initialState: GitHubSearchListRowStore.State(repo: .mock()),
+        reducer: GitHubSearchListRowStore()
+      )
+    )
   }
 }

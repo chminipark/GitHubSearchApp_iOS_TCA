@@ -17,9 +17,10 @@ struct GitHubSearchListView: View {
         List {
           ForEach(viewStore.searchResults) { repo in
             GitHubSearchListRowView(
-              store: Store(initialState: GitHubSearchListRowStore.State(),
-                           reducer: GitHubSearchListRowStore()),
-              repository: repo
+              store: Store(
+                initialState: GitHubSearchListRowStore.State(repo: repo),
+                reducer: GitHubSearchListRowStore()
+              )
             )
           }
           
