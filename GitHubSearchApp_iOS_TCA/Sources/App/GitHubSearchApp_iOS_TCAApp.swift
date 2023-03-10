@@ -10,13 +10,11 @@ import ComposableArchitecture
 
 @main
 struct GitHubSearchApp_iOS_TCAApp: App {
-  
-  let persistenceController = PersistenceController.shared
-  
+  let viewContext = CoreDataStorage.shared.viewContext
   var body: some Scene {
     WindowGroup {
       RootView()
-        .environment(\.managedObjectContext, persistenceController.container.viewContext)
+        .environment(\.managedObjectContext, viewContext)
     }
   }
 }

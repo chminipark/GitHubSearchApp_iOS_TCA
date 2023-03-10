@@ -32,10 +32,11 @@
 		BD66F98B29B76ADD00313967 /* APIEndpointsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD66F98A29B76ADD00313967 /* APIEndpointsTests.swift */; };
 		BD66F98F29B7A04600313967 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD66F98E29B7A04600313967 /* MockURLSession.swift */; };
 		BD66F99129B7A05700313967 /* APIMockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD66F99029B7A05700313967 /* APIMockData.swift */; };
+		BD932B6C29BB3DDB00599572 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD932B6B29BB3DDB00599572 /* CoreDataManager.swift */; };
+		BD932B6E29BB453000599572 /* CoreDataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD932B6D29BB453000599572 /* CoreDataStorage.swift */; };
 		BDE683C529BB085E00416220 /* MyRepo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE683C329BB085E00416220 /* MyRepo+CoreDataClass.swift */; };
 		BDE683C629BB085E00416220 /* MyRepo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE683C429BB085E00416220 /* MyRepo+CoreDataProperties.swift */; };
 		BDE683C929BB0A8A00416220 /* CoreDataManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE683C829BB0A8A00416220 /* CoreDataManagerTests.swift */; };
-		BDE683CB29BB0B0F00416220 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE683CA29BB0B0F00416220 /* PersistenceController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,10 +76,11 @@
 		BD66F98A29B76ADD00313967 /* APIEndpointsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndpointsTests.swift; sourceTree = "<group>"; };
 		BD66F98E29B7A04600313967 /* MockURLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLSession.swift; sourceTree = "<group>"; };
 		BD66F99029B7A05700313967 /* APIMockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIMockData.swift; sourceTree = "<group>"; };
+		BD932B6B29BB3DDB00599572 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		BD932B6D29BB453000599572 /* CoreDataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStorage.swift; sourceTree = "<group>"; };
 		BDE683C329BB085E00416220 /* MyRepo+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyRepo+CoreDataClass.swift"; sourceTree = "<group>"; };
 		BDE683C429BB085E00416220 /* MyRepo+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyRepo+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		BDE683C829BB0A8A00416220 /* CoreDataManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManagerTests.swift; sourceTree = "<group>"; };
-		BDE683CA29BB0B0F00416220 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,8 +124,8 @@
 			isa = PBXGroup;
 			children = (
 				BD66F96529B5D40800313967 /* ContentsTabView */,
-				BD537BA329A8EB6C0024A871 /* GitHubSearch */,
-				BD66F96929B5D6CB00313967 /* MyRepo */,
+				BD537BA329A8EB6C0024A871 /* GitHubSearchView */,
+				BD66F96929B5D6CB00313967 /* MyRepoView */,
 			);
 			path = GitHubSearchAppComponent;
 			sourceTree = "<group>";
@@ -136,14 +138,14 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		BD537BA329A8EB6C0024A871 /* GitHubSearch */ = {
+		BD537BA329A8EB6C0024A871 /* GitHubSearchView */ = {
 			isa = PBXGroup;
 			children = (
 				BD66F97E29B7666100313967 /* Data */,
 				BD537BA529A8EB720024A871 /* Views */,
 				BD537BA429A8EB6F0024A871 /* Store */,
 			);
-			path = GitHubSearch;
+			path = GitHubSearchView;
 			sourceTree = "<group>";
 		};
 		BD537BA429A8EB6F0024A871 /* Store */ = {
@@ -257,7 +259,8 @@
 				BDE683C329BB085E00416220 /* MyRepo+CoreDataClass.swift */,
 				BDE683C429BB085E00416220 /* MyRepo+CoreDataProperties.swift */,
 				BD61778029BB04E8003002D2 /* MyRepo.xcdatamodeld */,
-				BDE683CA29BB0B0F00416220 /* PersistenceController.swift */,
+				BD932B6B29BB3DDB00599572 /* CoreDataManager.swift */,
+				BD932B6D29BB453000599572 /* CoreDataStorage.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -278,12 +281,12 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		BD66F96929B5D6CB00313967 /* MyRepo */ = {
+		BD66F96929B5D6CB00313967 /* MyRepoView */ = {
 			isa = PBXGroup;
 			children = (
 				BD66F96A29B5D6FB00313967 /* Views */,
 			);
-			path = MyRepo;
+			path = MyRepoView;
 			sourceTree = "<group>";
 		};
 		BD66F96A29B5D6FB00313967 /* Views */ = {
@@ -521,6 +524,7 @@
 				BD55EF6029A7971D006E740D /* GitHubSearchListView.swift in Sources */,
 				BD66F96C29B5D70500313967 /* MyRepoView.swift in Sources */,
 				BD66F97729B61B8600313967 /* Requestable.swift in Sources */,
+				BD932B6C29BB3DDB00599572 /* CoreDataManager.swift in Sources */,
 				BD55EF4F29A60EBE006E740D /* GitHubSearchApp_iOS_TCAApp.swift in Sources */,
 				BD537BA229A8EAE70024A871 /* RootView.swift in Sources */,
 				BD66F98429B766A100313967 /* SearchRepoRequestDTO.swift in Sources */,
@@ -528,9 +532,9 @@
 				BDE683C629BB085E00416220 /* MyRepo+CoreDataProperties.swift in Sources */,
 				BD66F97D29B61DFC00313967 /* Provider.swift in Sources */,
 				BD66F96829B5D49900313967 /* ContentsTabView.swift in Sources */,
+				BD932B6E29BB453000599572 /* CoreDataStorage.swift in Sources */,
 				BD61778229BB04E8003002D2 /* MyRepo.xcdatamodeld in Sources */,
 				BD66F97929B61C7400313967 /* NetworkError.swift in Sources */,
-				BDE683CB29BB0B0F00416220 /* PersistenceController.swift in Sources */,
 				BD5CCE9E29ACE7ED00A7FC9E /* Repository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
