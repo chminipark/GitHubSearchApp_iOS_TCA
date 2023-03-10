@@ -15,7 +15,7 @@ struct GitHubSearchStore: ReducerProtocol {
     @BindingState var searchQuery = ""
     var currentPage = 1
     var isLoading = false
-    var searchResults: IdentifiedArrayOf<Repository> = []
+    var searchResults: IdentifiedArrayOf<GitHubSearchListRowStore.State> = []
   }
   
   enum Action: BindableAction, Equatable {
@@ -24,6 +24,8 @@ struct GitHubSearchStore: ReducerProtocol {
     case searchResponse(TaskResult<[Repository]>)
     case paginationRepo
     case paginationResponse(TaskResult<[Repository]>)
+    case didTapStarButton(id: GitHubSearchListRowStore.State.ID,
+                          action: GitHubSearchListRowStore.Action)
   }
   
   var body: some ReducerProtocol<State, Action> {
@@ -47,7 +49,12 @@ struct GitHubSearchStore: ReducerProtocol {
         
       case .searchResponse(.success(let response)):
         state.searchResults = []
-        state.searchResults.append(contentsOf: response)
+        for repo in response {
+          state.searchResults.append(
+            GitHubSearchListRowStore.State(repo: repo)
+          )
+        }
+        
         state.isLoading = false
         return .none
         
@@ -69,7 +76,12 @@ struct GitHubSearchStore: ReducerProtocol {
         }
         
       case .paginationResponse(.success(let response)):
-        state.searchResults += response
+        for repo in response {
+          state.searchResults.append(
+            GitHubSearchListRowStore.State(repo: repo)
+          )
+        }
+        
         state.isLoading = false
         return .none
         
@@ -77,7 +89,14 @@ struct GitHubSearchStore: ReducerProtocol {
         print(".paginationResponse Error")
         state.isLoading = false
         return .none
+        
+      case .didTapStarButton(id: _, action: .tapStarButton):
+        print("coredata execute")
+        return .none
       }
+    }
+    .forEach(\.searchResults, action: /Action.didTapStarButton(id: action:)) {
+      GitHubSearchListRowStore()
     }
   }
 }
@@ -115,3 +134,4 @@ extension DependencyValues {
     set { self[GitHubSearchClient.self] = newValue }
   }
 }
+

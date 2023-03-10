@@ -40,9 +40,10 @@ struct GitHubSearchListRowView: View {
 }
 
 struct GitHubSearchListRowStore: ReducerProtocol {
-  struct State: Equatable {
+  struct State: Equatable, Identifiable {
     var repo: Repository
     var starButtonState = false
+    var id: String { repo.urlString }
   }
   
   enum Action: Equatable {

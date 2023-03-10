@@ -15,13 +15,11 @@ struct GitHubSearchListView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       NavigationView {
         List {
-          ForEach(viewStore.searchResults) { repo in
-            GitHubSearchListRowView(
-              store: Store(
-                initialState: GitHubSearchListRowStore.State(repo: repo),
-                reducer: GitHubSearchListRowStore()
-              )
-            )
+          ForEachStore(store.scope(
+            state: \.searchResults,
+            action: GitHubSearchStore.Action.didTapStarButton(id: action:))
+          ) { myStore in
+            GitHubSearchListRowView(store: myStore)
           }
           
           if !viewStore.searchResults.isEmpty {
