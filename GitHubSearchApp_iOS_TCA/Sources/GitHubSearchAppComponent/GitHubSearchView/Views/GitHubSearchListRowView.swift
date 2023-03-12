@@ -9,7 +9,7 @@ import SwiftUI
 import ComposableArchitecture
 
 struct GitHubSearchListRowView: View {
-  let store: StoreOf<GitHubSearchListRowStore>
+  let store: StoreOf<GitHubSearchRowStore>
   
   var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
@@ -36,7 +36,7 @@ struct GitHubSearchListRowView: View {
   }
 }
 
-struct GitHubSearchListRowStore: ReducerProtocol {
+struct GitHubSearchRowStore: ReducerProtocol {
   let coreDataManager = CoreDataManager()
   
   struct State: Equatable, Identifiable {
@@ -52,7 +52,7 @@ struct GitHubSearchListRowStore: ReducerProtocol {
   func reduce(into state: inout State, action: Action) -> EffectTask<Action> {
     switch action {
     case .tapStarButton:
-      print(".tapStarButton in GitHubSearchListRowStore")
+      print(".tapStarButton in GitHubSearchRowStore")
       coreDataManager.add(repo: state.repo)
       state.starButtonState.toggle()
       return .none
@@ -64,8 +64,8 @@ struct GitHubSearchListRowView_Previews: PreviewProvider {
   static var previews: some View {
     GitHubSearchListRowView(
       store: Store(
-        initialState: GitHubSearchListRowStore.State(repo: .mock()),
-        reducer: GitHubSearchListRowStore()
+        initialState: GitHubSearchRowStore.State(repo: .mock()),
+        reducer: GitHubSearchRowStore()
       )
     )
   }

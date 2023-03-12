@@ -16,9 +16,7 @@ class CoreDataManager {
   
   func add(repo: Repository) {
     let context = coreDataStorage.taskContext()
-    if let savedItem = fetch(repo.id, in: context) {
-      
-    } else {
+    if fetch(repo.id, in: context) != nil {
       create(repo, in: context)
     }
     

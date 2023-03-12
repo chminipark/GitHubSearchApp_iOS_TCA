@@ -15,7 +15,7 @@ struct GitHubSearchStore: ReducerProtocol {
     @BindingState var searchQuery = ""
     var currentPage = 1
     var isLoading = false
-    var searchResults: IdentifiedArrayOf<GitHubSearchListRowStore.State> = []
+    var searchResults: IdentifiedArrayOf<GitHubSearchRowStore.State> = []
   }
   
   enum Action: BindableAction, Equatable {
@@ -24,8 +24,8 @@ struct GitHubSearchStore: ReducerProtocol {
     case searchResponse(TaskResult<[Repository]>)
     case paginationRepo
     case paginationResponse(TaskResult<[Repository]>)
-    case didTapStarButton(id: GitHubSearchListRowStore.State.ID,
-                          action: GitHubSearchListRowStore.Action)
+    case didTapStarButton(id: GitHubSearchRowStore.State.ID,
+                          action: GitHubSearchRowStore.Action)
   }
   
   var body: some ReducerProtocol<State, Action> {
@@ -51,7 +51,7 @@ struct GitHubSearchStore: ReducerProtocol {
         state.searchResults = []
         for repo in response {
           state.searchResults.append(
-            GitHubSearchListRowStore.State(repo: repo)
+            GitHubSearchRowStore.State(repo: repo)
           )
         }
         
@@ -78,7 +78,7 @@ struct GitHubSearchStore: ReducerProtocol {
       case .paginationResponse(.success(let response)):
         for repo in response {
           state.searchResults.append(
-            GitHubSearchListRowStore.State(repo: repo)
+            GitHubSearchRowStore.State(repo: repo)
           )
         }
         
@@ -96,7 +96,7 @@ struct GitHubSearchStore: ReducerProtocol {
       }
     }
     .forEach(\.searchResults, action: /Action.didTapStarButton(id: action:)) {
-      GitHubSearchListRowStore()
+      GitHubSearchRowStore()
     }
   }
 }
