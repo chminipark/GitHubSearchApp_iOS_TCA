@@ -37,7 +37,7 @@ struct GitHubSearchListRowView: View {
 }
 
 struct GitHubSearchRowStore: ReducerProtocol {
-//  let coreDataManager = CoreDataManager()
+  let coreDataManager = CoreDataManager.shared
   
   struct State: Equatable, Identifiable {
     var repo: Repository
@@ -53,7 +53,7 @@ struct GitHubSearchRowStore: ReducerProtocol {
     switch action {
     case .tapStarButton:
       print(".tapStarButton in GitHubSearchRowStore")
-//      coreDataManager.add(repo: state.repo)
+      let myRepo = coreDataManager.add(state.repo)
       state.starButtonState.toggle()
       return .none
     }

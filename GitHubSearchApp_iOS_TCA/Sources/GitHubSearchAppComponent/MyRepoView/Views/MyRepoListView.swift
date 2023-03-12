@@ -10,8 +10,6 @@ import SwiftUI
 /*
  일단 두개 뷰 사이에 버튼 색상 매칭만, store 생성유무 x, 그냥 fetchRequest 쓰고 나중에 리팩토링
  fetch 할때 각각의 Repository -> Coredata에 있는지 유무 트리거 (한번만 체크가 아닌)
- 
- 
  */
 
 struct MyRepoListView: View {
