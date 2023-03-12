@@ -27,14 +27,6 @@ class CoreDataManagerTests: XCTestCase {
     self.coreDataManager = nil
   }
   
-//  XCTAssertNotNil(report, "Report should not be nil")
-//  XCTAssertTrue(report.location == "Death Star")
-//  XCTAssertTrue(report.numberTested == 1000)
-//  XCTAssertTrue(report.numberPositive == 999)
-//  XCTAssertTrue(report.numberNegative == 1)
-//  XCTAssertNotNil(report.id, "id should not be nil")
-//  XCTAssertNotNil(report.dateReported, "dateReported should not be nil")
-  
   func testAddRepo() {
     // given
     let mockRepo = Repository(
@@ -53,5 +45,37 @@ class CoreDataManagerTests: XCTestCase {
     XCTAssertTrue(myRepo.repoDescription == "repository description")
     XCTAssertTrue(myRepo.starCount == 100)
     XCTAssertTrue(myRepo.urlString == "repository urlString")
+  }
+
+  func testRootContextIsSavedAfterAddingRepo() {
+    // given
+    let mockRepo = Repository(
+      name: "repository name",
+      description: "repository description",
+      starCount: 100,
+      urlString: "repository urlString"
+    )
+    let derivedContext = testCoreDataStorage.newDerivedContext()
+    coreDataManager = CoreDataManager(
+      managedObjectContext: derivedContext,
+      coreDataStorage: testCoreDataStorage
+    )
+    
+    // when
+    expectation(forNotification: .NSManagedObjectContextDidSave,
+                object: testCoreDataStorage.mainContext) { _ in
+      return true
+    }
+    
+    // then
+    derivedContext.perform {
+      let myRepo = self.coreDataManager.add(mockRepo)
+      
+      XCTAssertNotNil(myRepo)
+    }
+    
+    waitForExpectations(timeout: 2) { error in
+      XCTAssertNil(error, "Save did not occur")
+    }
   }
 }
