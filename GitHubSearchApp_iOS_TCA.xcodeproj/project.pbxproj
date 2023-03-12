@@ -35,6 +35,7 @@
 		BD932B6C29BB3DDB00599572 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD932B6B29BB3DDB00599572 /* CoreDataManager.swift */; };
 		BD932B6E29BB453000599572 /* CoreDataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD932B6D29BB453000599572 /* CoreDataStorage.swift */; };
 		BD932B7129BB64E100599572 /* MyRepoStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD932B7029BB64E100599572 /* MyRepoStore.swift */; };
+		BD932B7929BDFCFA00599572 /* TestCoreDataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD932B7829BDFCFA00599572 /* TestCoreDataStorage.swift */; };
 		BDE683C529BB085E00416220 /* MyRepo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE683C329BB085E00416220 /* MyRepo+CoreDataClass.swift */; };
 		BDE683C629BB085E00416220 /* MyRepo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE683C429BB085E00416220 /* MyRepo+CoreDataProperties.swift */; };
 		BDE683C929BB0A8A00416220 /* CoreDataManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE683C829BB0A8A00416220 /* CoreDataManagerTests.swift */; };
@@ -80,6 +81,7 @@
 		BD932B6B29BB3DDB00599572 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		BD932B6D29BB453000599572 /* CoreDataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStorage.swift; sourceTree = "<group>"; };
 		BD932B7029BB64E100599572 /* MyRepoStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRepoStore.swift; sourceTree = "<group>"; };
+		BD932B7829BDFCFA00599572 /* TestCoreDataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCoreDataStorage.swift; sourceTree = "<group>"; };
 		BDE683C329BB085E00416220 /* MyRepo+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyRepo+CoreDataClass.swift"; sourceTree = "<group>"; };
 		BDE683C429BB085E00416220 /* MyRepo+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyRepo+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		BDE683C829BB0A8A00416220 /* CoreDataManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManagerTests.swift; sourceTree = "<group>"; };
@@ -179,7 +181,7 @@
 		BD537BAC29A8F2830024A871 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				BDE683C729BB097D00416220 /* CoreDataManagerTests */,
+				BDE683C729BB097D00416220 /* CoreDataTests */,
 				BD66F98929B76AB500313967 /* APIEndpointsTests */,
 				BD537BCC29A8F51D0024A871 /* GitHubSearchAppComponentTests */,
 			);
@@ -258,11 +260,9 @@
 		BD61777F29BB043E003002D2 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				BDE683C329BB085E00416220 /* MyRepo+CoreDataClass.swift */,
-				BDE683C429BB085E00416220 /* MyRepo+CoreDataProperties.swift */,
 				BD61778029BB04E8003002D2 /* MyRepo.xcdatamodeld */,
-				BD932B6B29BB3DDB00599572 /* CoreDataManager.swift */,
-				BD932B6D29BB453000599572 /* CoreDataStorage.swift */,
+				BD932B7329BDC28400599572 /* DataMapping */,
+				BD932B7229BDC27F00599572 /* CoreDataManager */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -398,12 +398,31 @@
 			path = Store;
 			sourceTree = "<group>";
 		};
-		BDE683C729BB097D00416220 /* CoreDataManagerTests */ = {
+		BD932B7229BDC27F00599572 /* CoreDataManager */ = {
+			isa = PBXGroup;
+			children = (
+				BD932B6B29BB3DDB00599572 /* CoreDataManager.swift */,
+				BD932B6D29BB453000599572 /* CoreDataStorage.swift */,
+			);
+			path = CoreDataManager;
+			sourceTree = "<group>";
+		};
+		BD932B7329BDC28400599572 /* DataMapping */ = {
+			isa = PBXGroup;
+			children = (
+				BDE683C329BB085E00416220 /* MyRepo+CoreDataClass.swift */,
+				BDE683C429BB085E00416220 /* MyRepo+CoreDataProperties.swift */,
+			);
+			path = DataMapping;
+			sourceTree = "<group>";
+		};
+		BDE683C729BB097D00416220 /* CoreDataTests */ = {
 			isa = PBXGroup;
 			children = (
 				BDE683C829BB0A8A00416220 /* CoreDataManagerTests.swift */,
+				BD932B7829BDFCFA00599572 /* TestCoreDataStorage.swift */,
 			);
-			path = CoreDataManagerTests;
+			path = CoreDataTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -517,6 +536,7 @@
 				BD66F98F29B7A04600313967 /* MockURLSession.swift in Sources */,
 				BD2F42BE29AE1B24004766A4 /* GitHubSearchViewTests.swift in Sources */,
 				BD66F99129B7A05700313967 /* APIMockData.swift in Sources */,
+				BD932B7929BDFCFA00599572 /* TestCoreDataStorage.swift in Sources */,
 				BDE683C929BB0A8A00416220 /* CoreDataManagerTests.swift in Sources */,
 				BD66F98B29B76ADD00313967 /* APIEndpointsTests.swift in Sources */,
 			);
