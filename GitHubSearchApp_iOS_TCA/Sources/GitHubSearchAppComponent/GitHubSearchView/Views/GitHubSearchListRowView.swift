@@ -60,9 +60,14 @@ struct GitHubSearchRowStore: ReducerProtocol {
       
     case .tapStarButton:
       print(".tapStarButton in GitHubSearchRowStore")
-      return .task { [repo = state.repo] in
-        let isSuccess = await coreDataManager.add(repo) == nil ? true : false
-        return .toggleStarButtonState(isSuccess: isSuccess)
+      return .task { [repo = state.repo, isStore = state.starButtonState] in
+        if !isStore {
+          let isSuccess = await coreDataManager.add(repo) == nil ? true : false
+          return .toggleStarButtonState(isSuccess: isSuccess)
+        } else {
+          let isSuccess = await coreDataManager.remove(repo) == nil ? true : false
+          return .toggleStarButtonState(isSuccess: isSuccess)
+        }
       }
     }
   }

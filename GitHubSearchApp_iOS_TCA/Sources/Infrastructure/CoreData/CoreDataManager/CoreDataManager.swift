@@ -22,6 +22,23 @@ class CoreDataManager {
     return resultError
   }
   
+  func remove(_ repo: Repository) async -> CoreDataError? {
+    let context = coreDataStorage.mainContext
+    let fetchRequest: NSFetchRequest<MyRepo> = MyRepo.fetchRequest()
+    fetchRequest.predicate = NSPredicate(format: "urlString == %@", repo.urlString)
+    
+    do {
+      let objects = try context.fetch(fetchRequest)
+      for object in objects {
+        context.delete(object)
+      }
+      try context.save()
+      return nil
+    } catch {
+      return .removeError
+    }
+  }
+  
   fileprivate func create(_ repo: Repository, in context: NSManagedObjectContext) {
     let myRepo = MyRepo(context: context)
     myRepo.name = repo.name
@@ -43,3 +60,5 @@ class CoreDataManager {
     }
   }
 }
+
+
