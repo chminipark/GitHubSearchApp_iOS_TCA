@@ -10,6 +10,7 @@ import ComposableArchitecture
 
 struct GitHubSearchStore: ReducerProtocol {
   @Dependency(\.gitHubSearchClient) var gitHubSearchClient
+  let coreDataManager = CoreDataManager.shared
   
   struct State: Equatable {
     @BindingState var searchQuery = ""
@@ -50,8 +51,10 @@ struct GitHubSearchStore: ReducerProtocol {
       case .searchResponse(.success(let response)):
         state.searchResults = []
         for repo in response {
+          let starButtonState = coreDataManager.inCoreData(repo)
           state.searchResults.append(
-            GitHubSearchRowStore.State(repo: repo)
+            GitHubSearchRowStore.State(repo: repo,
+                                       starButtonState: starButtonState)
           )
         }
         
@@ -77,8 +80,10 @@ struct GitHubSearchStore: ReducerProtocol {
         
       case .paginationResponse(.success(let response)):
         for repo in response {
+          let starButtonState = coreDataManager.inCoreData(repo)
           state.searchResults.append(
-            GitHubSearchRowStore.State(repo: repo)
+            GitHubSearchRowStore.State(repo: repo,
+                                       starButtonState: starButtonState)
           )
         }
         
@@ -139,3 +144,13 @@ extension DependencyValues {
   }
 }
 
+extension CoreDataManager {
+  func inCoreData(_ repo: Repository) -> Bool {
+    let context = coreDataStorage.mainContext
+    if let savedRepo = fetch(repo, context: context) {
+      return true
+    } else {
+      return false
+    }
+  }
+}

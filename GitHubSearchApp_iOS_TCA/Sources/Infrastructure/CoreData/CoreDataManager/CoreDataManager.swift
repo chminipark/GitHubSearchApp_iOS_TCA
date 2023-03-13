@@ -15,30 +15,6 @@ class CoreDataManager {
     self.coreDataStorage = coreDataStorage
   }
   
-  func add(_ repo: Repository) async -> CoreDataError? {
-    let context = coreDataStorage.mainContext
-    create(repo, in: context)
-    let resultError = await performContext(with: context, coreDataError: .addError)
-    return resultError
-  }
-  
-  func remove(_ repo: Repository) async -> CoreDataError? {
-    let context = coreDataStorage.mainContext
-    let fetchRequest: NSFetchRequest<MyRepo> = MyRepo.fetchRequest()
-    fetchRequest.predicate = NSPredicate(format: "urlString == %@", repo.urlString)
-    
-    do {
-      let objects = try context.fetch(fetchRequest)
-      for object in objects {
-        context.delete(object)
-      }
-      try context.save()
-      return nil
-    } catch {
-      return .removeError
-    }
-  }
-  
   fileprivate func create(_ repo: Repository, in context: NSManagedObjectContext) {
     let myRepo = MyRepo(context: context)
     myRepo.name = repo.name
@@ -59,6 +35,42 @@ class CoreDataManager {
       }
     }
   }
+  
+  func fetch(_ repo: Repository, context: NSManagedObjectContext) -> MyRepo? {
+    let fetchRequest: NSFetchRequest<MyRepo> = MyRepo.fetchRequest()
+    fetchRequest.predicate = NSPredicate(format: "urlString == %@", repo.urlString)
+    
+    do {
+      return try context.fetch(fetchRequest).first
+    } catch {
+      return nil
+    }
+  }
 }
 
-
+extension CoreDataManager {
+  func add(_ repo: Repository) async -> CoreDataError? {
+    let context = coreDataStorage.mainContext
+    if let savedRepo = fetch(repo, context: context) {
+      return nil
+    }
+    
+    create(repo, in: context)
+    let addError = await performContext(with: context, coreDataError: .addError)
+    return addError
+  }
+  
+  func remove(_ repo: Repository) async -> CoreDataError? {
+    let context = coreDataStorage.mainContext
+    do {
+      guard let object = fetch(repo, context: context) else {
+        return nil
+      }
+      context.delete(object)
+      try context.save()
+      return nil
+    } catch {
+      return .removeError
+    }
+  }
+}
