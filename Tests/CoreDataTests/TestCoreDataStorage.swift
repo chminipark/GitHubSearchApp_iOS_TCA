@@ -28,6 +28,6 @@ class TestCoreDataStorage: CoreDataStorage {
       }
     }
     
-    storeContainer = container
+    persistentContainer = container
   }
 }

@@ -7,36 +7,39 @@
 
 import CoreData
 
-final class CoreDataManager {
-  let managedObjectContext: NSManagedObjectContext
+class CoreDataManager {
   let coreDataStorage: CoreDataStorage
+  static let shared = CoreDataManager(coreDataStorage: .shared)
   
-  init(managedObjectContext: NSManagedObjectContext, coreDataStorage: CoreDataStorage) {
-    self.managedObjectContext = managedObjectContext
+  init(coreDataStorage: CoreDataStorage) {
     self.coreDataStorage = coreDataStorage
   }
   
-  func add(_ repo: Repository) -> MyRepo {
-    let myRepo = MyRepo(context: managedObjectContext)
+  func add(_ repo: Repository) async -> CoreDataError? {
+    let context = coreDataStorage.mainContext
+    create(repo, in: context)
+    let resultError = await performContext(with: context, coreDataError: .addError)
+    return resultError
+  }
+  
+  fileprivate func create(_ repo: Repository, in context: NSManagedObjectContext) {
+    let myRepo = MyRepo(context: context)
     myRepo.name = repo.name
     myRepo.repoDescription = repo.description
-    myRepo.urlString = repo.urlString
     myRepo.starCount = Int64(repo.starCount)
-    
-    coreDataStorage.saveContext(managedObjectContext)
-    
-    return myRepo
+    myRepo.urlString = repo.urlString
   }
-}
-
-extension CoreDataManager {
-  static let shared: CoreDataManager = {
-    let coreDataStorage = CoreDataStorage.shared
-    let coreDataManager = CoreDataManager(
-      managedObjectContext: coreDataStorage.mainContext,
-      coreDataStorage: coreDataStorage
-    )
-    
-    return coreDataManager
-  }()
+  
+  fileprivate func performContext(with context: NSManagedObjectContext,
+                                  coreDataError: CoreDataError)
+  async -> CoreDataError? {
+    await context.perform {
+      do {
+        try context.save()
+        return nil
+      } catch {
+        return coreDataError
+      }
+    }
+  }
 }

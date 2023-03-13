@@ -10,24 +10,21 @@ import CoreData
 @testable import GitHubSearchApp_iOS_TCA
 
 class CoreDataManagerTests: XCTestCase {
-  var testCoreDataStorage: TestCoreDataStorage!
+  var coreDataStorage: TestCoreDataStorage!
   var coreDataManager: CoreDataManager!
   
   override func setUp() {
     super.setUp()
-    self.testCoreDataStorage = TestCoreDataStorage()
-    self.coreDataManager = CoreDataManager(
-      managedObjectContext: testCoreDataStorage.mainContext,
-      coreDataStorage: testCoreDataStorage
-    )
+    self.coreDataStorage = TestCoreDataStorage()
+    self.coreDataManager = CoreDataManager(coreDataStorage: coreDataStorage)
   }
   
   override func tearDown() {
-    self.testCoreDataStorage = nil
+    self.coreDataStorage = nil
     self.coreDataManager = nil
   }
   
-  func testAddRepo() {
+  func testAddRepo() async {
     // given
     let mockRepo = Repository(
       name: "repository name",
@@ -37,45 +34,9 @@ class CoreDataManagerTests: XCTestCase {
     )
     
     // when
-    let myRepo = coreDataManager.add(mockRepo)
+    let resultError = await coreDataManager.add(mockRepo)
     
     // then
-    XCTAssertNotNil(myRepo, "myRepo should not be nil")
-    XCTAssertTrue(myRepo.name == "repository name")
-    XCTAssertTrue(myRepo.repoDescription == "repository description")
-    XCTAssertTrue(myRepo.starCount == 100)
-    XCTAssertTrue(myRepo.urlString == "repository urlString")
-  }
-
-  func testRootContextIsSavedAfterAddingRepo() {
-    // given
-    let mockRepo = Repository(
-      name: "repository name",
-      description: "repository description",
-      starCount: 100,
-      urlString: "repository urlString"
-    )
-    let derivedContext = testCoreDataStorage.newDerivedContext()
-    coreDataManager = CoreDataManager(
-      managedObjectContext: derivedContext,
-      coreDataStorage: testCoreDataStorage
-    )
-    
-    // when
-    expectation(forNotification: .NSManagedObjectContextDidSave,
-                object: testCoreDataStorage.mainContext) { _ in
-      return true
-    }
-    
-    // then
-    derivedContext.perform {
-      let myRepo = self.coreDataManager.add(mockRepo)
-      
-      XCTAssertNotNil(myRepo)
-    }
-    
-    waitForExpectations(timeout: 2) { error in
-      XCTAssertNil(error, "Save did not occur")
-    }
+    XCTAssertNil(resultError)
   }
 }

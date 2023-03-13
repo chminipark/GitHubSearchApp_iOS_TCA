@@ -91,7 +91,11 @@ struct GitHubSearchStore: ReducerProtocol {
         return .none
         
       case .didTapStarButton(id: _, action: .tapStarButton):
-        print(".didTapStarButton in GitHubSearchStore")
+        print(".didTapStarButton in GitHubSearchStore, didTapStarButton")
+        return .none
+        
+      case .didTapStarButton(id: let id, action: .toggleStarButtonState(isSuccess: let isSuccess)):
+        print(".didTapStarButton in GitHubSearchStore, toggleStarButtonState")
         return .none
       }
     }
