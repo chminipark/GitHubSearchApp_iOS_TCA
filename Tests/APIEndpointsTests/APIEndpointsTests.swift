@@ -8,22 +8,28 @@
 import XCTest
 @testable import GitHubSearchApp_iOS_TCA
 
-// teardown?
 final class APIEndpointsTests: XCTestCase {
-  var searchRepoRequestDTO: SearchRepoRequestDTO!
-  var endpoint: Endpoint<SearchRepoResponseDTO>!
+  var session: MockURLSession!
+  var providerImpl: ProviderImpl!
   
-  override func setUpWithError() throws {
-    self.searchRepoRequestDTO = SearchRepoRequestDTO(searchText: "searchText", currentPage: 1)
-    self.endpoint = APIEndpoints.searchRepo(with: searchRepoRequestDTO)
+  override func setUp() {
+    super.setUp()
+    self.session = MockURLSession(isFail: false)
+    self.providerImpl = ProviderImpl(session: session)
+  }
+  
+  override func tearDown() {
+    self.session = nil
+    self.providerImpl = nil
   }
   
   func test_ProviderRequestWithSearchRepo_Success() async {
     // given
-    let providerImpl = ProviderImpl(session: MockURLSession(isFail: false))
+    let searchRepoRequestDTO = SearchRepoRequestDTO(searchText: "searchText", currentPage: 1)
+    let endpoint = APIEndpoints.searchRepo(with: searchRepoRequestDTO)
     
     // when
-    let result = await providerImpl.request(endpoint: self.endpoint)
+    let result = await providerImpl.request(endpoint: endpoint)
     
     // then
     switch result {
@@ -36,10 +42,12 @@ final class APIEndpointsTests: XCTestCase {
   
   func test_ProviderRequestWithSearchRepo_Fail() async {
     // given
-    let providerImpl = ProviderImpl(session: MockURLSession(isFail: true))
+    let searchRepoRequestDTO = SearchRepoRequestDTO(searchText: "searchText", currentPage: 1)
+    let endpoint = APIEndpoints.searchRepo(with: searchRepoRequestDTO)
+    providerImpl = ProviderImpl(session: MockURLSession(isFail: true))
     
     // when
-    let result = await providerImpl.request(endpoint: self.endpoint)
+    let result = await providerImpl.request(endpoint: endpoint)
     
     // then
     switch result {

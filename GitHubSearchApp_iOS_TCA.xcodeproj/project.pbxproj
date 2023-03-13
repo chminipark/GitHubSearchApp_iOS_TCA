@@ -37,6 +37,8 @@
 		BD932B7129BB64E100599572 /* MyRepoStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD932B7029BB64E100599572 /* MyRepoStore.swift */; };
 		BD932B7929BDFCFA00599572 /* TestCoreDataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD932B7829BDFCFA00599572 /* TestCoreDataStorage.swift */; };
 		BD932B7D29BF2D9200599572 /* CoreDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD932B7C29BF2D9200599572 /* CoreDataError.swift */; };
+		BD932B7F29BF593900599572 /* GitHubSearchRowStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD932B7E29BF593900599572 /* GitHubSearchRowStore.swift */; };
+		BD932B8229BF59B200599572 /* GitHubSearchClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD932B8129BF59B200599572 /* GitHubSearchClient.swift */; };
 		BDE683C529BB085E00416220 /* MyRepo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE683C329BB085E00416220 /* MyRepo+CoreDataClass.swift */; };
 		BDE683C629BB085E00416220 /* MyRepo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE683C429BB085E00416220 /* MyRepo+CoreDataProperties.swift */; };
 		BDE683C929BB0A8A00416220 /* CoreDataManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE683C829BB0A8A00416220 /* CoreDataManagerTests.swift */; };
@@ -84,6 +86,8 @@
 		BD932B7029BB64E100599572 /* MyRepoStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRepoStore.swift; sourceTree = "<group>"; };
 		BD932B7829BDFCFA00599572 /* TestCoreDataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCoreDataStorage.swift; sourceTree = "<group>"; };
 		BD932B7C29BF2D9200599572 /* CoreDataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataError.swift; sourceTree = "<group>"; };
+		BD932B7E29BF593900599572 /* GitHubSearchRowStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubSearchRowStore.swift; sourceTree = "<group>"; };
+		BD932B8129BF59B200599572 /* GitHubSearchClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubSearchClient.swift; sourceTree = "<group>"; };
 		BDE683C329BB085E00416220 /* MyRepo+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyRepo+CoreDataClass.swift"; sourceTree = "<group>"; };
 		BDE683C429BB085E00416220 /* MyRepo+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyRepo+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		BDE683C829BB0A8A00416220 /* CoreDataManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManagerTests.swift; sourceTree = "<group>"; };
@@ -147,6 +151,7 @@
 		BD537BA329A8EB6C0024A871 /* GitHubSearchView */ = {
 			isa = PBXGroup;
 			children = (
+				BD932B8029BF599500599572 /* Dependency */,
 				BD66F97E29B7666100313967 /* Data */,
 				BD537BA529A8EB720024A871 /* Views */,
 				BD537BA429A8EB6F0024A871 /* Store */,
@@ -158,6 +163,7 @@
 			isa = PBXGroup;
 			children = (
 				BD5CCE9F29ACE8E100A7FC9E /* GitHubSearchStore.swift */,
+				BD932B7E29BF593900599572 /* GitHubSearchRowStore.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -427,6 +433,14 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
+		BD932B8029BF599500599572 /* Dependency */ = {
+			isa = PBXGroup;
+			children = (
+				BD932B8129BF59B200599572 /* GitHubSearchClient.swift */,
+			);
+			path = Dependency;
+			sourceTree = "<group>";
+		};
 		BDE683C729BB097D00416220 /* CoreDataTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -576,7 +590,9 @@
 				BDE683C629BB085E00416220 /* MyRepo+CoreDataProperties.swift in Sources */,
 				BD66F97D29B61DFC00313967 /* Provider.swift in Sources */,
 				BD66F96829B5D49900313967 /* ContentsTabView.swift in Sources */,
+				BD932B7F29BF593900599572 /* GitHubSearchRowStore.swift in Sources */,
 				BD932B6E29BB453000599572 /* CoreDataStorage.swift in Sources */,
+				BD932B8229BF59B200599572 /* GitHubSearchClient.swift in Sources */,
 				BD61778229BB04E8003002D2 /* MyRepo.xcdatamodeld in Sources */,
 				BD66F97929B61C7400313967 /* NetworkError.swift in Sources */,
 				BD5CCE9E29ACE7ED00A7FC9E /* Repository.swift in Sources */,
