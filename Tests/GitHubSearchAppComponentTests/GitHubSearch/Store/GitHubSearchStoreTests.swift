@@ -28,13 +28,21 @@ final class GitHubSearchStoreTests: XCTestCase {
     // given, when
     let testSearchText = "123"
     let mockRepoList = Repository.mockRepoList(testSearchText.count)
-    let store = TestStore(initialState: GitHubSearchStore.State(),
-                          reducer: GitHubSearchStore()) { testDependency in
+    let searchResults: IdentifiedArrayOf<GitHubSearchRowStore.State>
+    = IdentifiedArrayOf(
+      uniqueElements: mockRepoList.map { repo in
+        GitHubSearchRowStore.State(repo: repo)
+      }
+    )
+    let store = TestStore(
+      initialState: GitHubSearchStore.State(),
+      reducer: GitHubSearchStore()
+    ) { testDependency in
       testDependency.gitHubSearchClient.fetchData = { _, _ in
         return mockRepoList
       }
     }
-
+    
     // then
     await store.send(.set(\.$searchQuery, testSearchText)) {
       $0.searchQuery = testSearchText
@@ -45,7 +53,7 @@ final class GitHubSearchStoreTests: XCTestCase {
     }
     
     await store.receive(.searchResponse(.success(mockRepoList))) {
-      $0.searchResults = mockRepoList
+      $0.searchResults = searchResults
       $0.isLoading = false
     }
   }
@@ -54,15 +62,23 @@ final class GitHubSearchStoreTests: XCTestCase {
     // given, when
     let testSearchText = "123"
     let mockRepoList = Repository.mockRepoList(testSearchText.count)
-    let store = TestStore(initialState: GitHubSearchStore.State(searchQuery: testSearchText,
-                                                                currentPage: 2,
-                                                                searchResults: mockRepoList
-                                                               ),
-                          reducer: GitHubSearchStore()) { testDependency in
-      testDependency.gitHubSearchClient.fetchData = { _, _ in
-        return mockRepoList
+    let searchResults: IdentifiedArrayOf<GitHubSearchRowStore.State>
+    = IdentifiedArrayOf(
+      uniqueElements: mockRepoList.map { repo in
+        GitHubSearchRowStore.State(repo: repo)
       }
-    }
+    )
+    let store = TestStore(
+      initialState: GitHubSearchStore.State(
+        searchQuery: testSearchText,
+        currentPage: 2,
+        searchResults: searchResults
+      ),
+      reducer: GitHubSearchStore()) { testDependency in
+        testDependency.gitHubSearchClient.fetchData = { _, _ in
+          return mockRepoList
+        }
+      }
     
     // then
     await store.send(.paginationRepo) {
@@ -71,7 +87,13 @@ final class GitHubSearchStoreTests: XCTestCase {
     }
     
     await store.receive(.paginationResponse(.success(mockRepoList))) {
-      $0.searchResults += mockRepoList
+      let response: IdentifiedArrayOf<GitHubSearchRowStore.State>
+      = IdentifiedArrayOf(
+        uniqueElements: mockRepoList.map { repo in
+          GitHubSearchRowStore.State(repo: repo)
+        }
+      )
+      $0.searchResults += response
       $0.isLoading = false
     }
   }

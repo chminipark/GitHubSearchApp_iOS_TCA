@@ -10,9 +10,11 @@ import ComposableArchitecture
 
 @main
 struct GitHubSearchApp_iOS_TCAApp: App {
+  let viewContext = CoreDataStorage.shared.mainContext
   var body: some Scene {
     WindowGroup {
       RootView()
+        .environment(\.managedObjectContext, viewContext)
     }
   }
 }

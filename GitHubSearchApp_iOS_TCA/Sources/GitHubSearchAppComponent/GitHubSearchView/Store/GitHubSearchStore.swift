@@ -10,12 +10,13 @@ import ComposableArchitecture
 
 struct GitHubSearchStore: ReducerProtocol {
   @Dependency(\.gitHubSearchClient) var gitHubSearchClient
+  let coreDataManager = CoreDataManager.shared
   
   struct State: Equatable {
     @BindingState var searchQuery = ""
     var currentPage = 1
     var isLoading = false
-    var searchResults: [Repository] = []
+    var searchResults: IdentifiedArrayOf<GitHubSearchRowStore.State> = []
   }
   
   enum Action: BindableAction, Equatable {
@@ -24,6 +25,8 @@ struct GitHubSearchStore: ReducerProtocol {
     case searchResponse(TaskResult<[Repository]>)
     case paginationRepo
     case paginationResponse(TaskResult<[Repository]>)
+    case didTapStarButton(id: GitHubSearchRowStore.State.ID,
+                          action: GitHubSearchRowStore.Action)
   }
   
   var body: some ReducerProtocol<State, Action> {
@@ -46,7 +49,15 @@ struct GitHubSearchStore: ReducerProtocol {
         }
         
       case .searchResponse(.success(let response)):
-        state.searchResults = response
+        state.searchResults = []
+        for repo in response {
+          let starButtonState = coreDataManager.inCoreData(repo)
+          state.searchResults.append(
+            GitHubSearchRowStore.State(repo: repo,
+                                       starButtonState: starButtonState)
+          )
+        }
+        
         state.isLoading = false
         return .none
         
@@ -68,7 +79,14 @@ struct GitHubSearchStore: ReducerProtocol {
         }
         
       case .paginationResponse(.success(let response)):
-        state.searchResults += response
+        for repo in response {
+          let starButtonState = coreDataManager.inCoreData(repo)
+          state.searchResults.append(
+            GitHubSearchRowStore.State(repo: repo,
+                                       starButtonState: starButtonState)
+          )
+        }
+        
         state.isLoading = false
         return .none
         
@@ -76,7 +94,18 @@ struct GitHubSearchStore: ReducerProtocol {
         print(".paginationResponse Error")
         state.isLoading = false
         return .none
+        
+      case .didTapStarButton(id: _, action: .tapStarButton):
+        print(".didTapStarButton in GitHubSearchStore, didTapStarButton")
+        return .none
+        
+      case .didTapStarButton(id: let id, action: .toggleStarButtonState(isSuccess: let isSuccess)):
+        print(".didTapStarButton in GitHubSearchStore, toggleStarButtonState : \(isSuccess)")
+        return .none
       }
+    }
+    .forEach(\.searchResults, action: /Action.didTapStarButton(id: action:)) {
+      GitHubSearchRowStore()
     }
   }
 }
@@ -112,5 +141,16 @@ extension DependencyValues {
   var gitHubSearchClient: GitHubSearchClient {
     get { self[GitHubSearchClient.self] }
     set { self[GitHubSearchClient.self] = newValue }
+  }
+}
+
+extension CoreDataManager {
+  func inCoreData(_ repo: Repository) -> Bool {
+    let context = coreDataStorage.mainContext
+    if let savedRepo = fetch(repo, context: context) {
+      return true
+    } else {
+      return false
+    }
   }
 }

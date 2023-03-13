@@ -24,7 +24,7 @@ struct ContentsTabView: View {
         }
       }
       
-      MyRepoView()
+      MyRepoListView()
         .tabItem {
           VStack {
             Image(systemName: "bookmark")
