@@ -14,12 +14,14 @@ struct GitHubSearchRowStore: ReducerProtocol {
   struct State: Equatable, Identifiable {
     var repo: Repository
     var starButtonState = false
+    var isShowSafari = false
     var id: String { repo.urlString }
   }
   
   enum Action: Equatable {
     case toggleStarButtonState(isSuccess: Bool)
     case tapStarButton
+    case showSafari(isShow: Bool)
   }
   
   func reduce(into state: inout State, action: Action) -> EffectTask<Action> {
@@ -31,7 +33,6 @@ struct GitHubSearchRowStore: ReducerProtocol {
       return .none
       
     case .tapStarButton:
-      print(".tapStarButton in GitHubSearchRowStore")
       return .task { [repo = state.repo, isStore = state.starButtonState] in
         if !isStore {
           let isSuccess = await coreDataManager.add(repo) == nil ? true : false
@@ -41,6 +42,10 @@ struct GitHubSearchRowStore: ReducerProtocol {
           return .toggleStarButtonState(isSuccess: isSuccess)
         }
       }
+      
+    case .showSafari(let isShow):
+      state.isShowSafari = isShow
+      return .none
     }
   }
 }

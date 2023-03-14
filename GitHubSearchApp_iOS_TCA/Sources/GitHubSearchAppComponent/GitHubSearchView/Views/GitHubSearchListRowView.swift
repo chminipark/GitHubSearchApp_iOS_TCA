@@ -12,9 +12,6 @@ import SafariServices
 struct GitHubSearchListRowView: View {
   let store: StoreOf<GitHubSearchRowStore>
   
-  @State var showSafari = false
-  @State var urlString = ""
-  
   var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       HStack {
@@ -37,14 +34,13 @@ struct GitHubSearchListRowView: View {
         }
       }
       .onTapGesture {
-        showSafari = true
+        viewStore.send(.showSafari(isShow: true))
       }
-      .sheet(isPresented: $showSafari) {
-        if let url = URL(string: viewStore.repo.urlString) {
-          SafariView(url: url)
-        } else {
-          EmptyView()
-        }
+      .sheet(isPresented: viewStore.binding(
+        get: \.isShowSafari,
+        send: GitHubSearchRowStore.Action.showSafari(isShow:))
+      ) {
+        SafariView(url: URL(string: viewStore.repo.urlString)!)
       }
     }
   }

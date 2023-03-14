@@ -25,8 +25,8 @@ struct GitHubSearchStore: ReducerProtocol {
     case searchResponse(TaskResult<[Repository]>)
     case paginationRepo
     case paginationResponse(TaskResult<[Repository]>)
-    case didTapStarButton(id: GitHubSearchRowStore.State.ID,
-                          action: GitHubSearchRowStore.Action)
+    case forEachRepos(id: GitHubSearchRowStore.State.ID,
+                      action: GitHubSearchRowStore.Action)
   }
   
   var body: some ReducerProtocol<State, Action> {
@@ -95,16 +95,17 @@ struct GitHubSearchStore: ReducerProtocol {
         state.isLoading = false
         return .none
         
-      case .didTapStarButton(id: _, action: .tapStarButton):
-        print(".didTapStarButton in GitHubSearchStore, didTapStarButton")
+      case .forEachRepos(id: let id, action: .tapStarButton):
         return .none
         
-      case .didTapStarButton(id: let id, action: .toggleStarButtonState(isSuccess: let isSuccess)):
-        print(".didTapStarButton in GitHubSearchStore, toggleStarButtonState : \(isSuccess)")
+      case .forEachRepos(id: let id, action: .toggleStarButtonState):
+        return .none
+        
+      case .forEachRepos(id: let id, action: .showSafari):
         return .none
       }
     }
-    .forEach(\.searchResults, action: /Action.didTapStarButton(id: action:)) {
+    .forEach(\.searchResults, action: /Action.forEachRepos(id: action:)) {
       GitHubSearchRowStore()
     }
   }
