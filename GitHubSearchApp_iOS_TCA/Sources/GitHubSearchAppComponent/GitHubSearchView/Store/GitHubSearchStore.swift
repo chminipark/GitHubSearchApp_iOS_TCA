@@ -44,7 +44,7 @@ struct GitHubSearchStore: ReducerProtocol {
         state.isLoading = true
         return .task { [query = state.searchQuery] in
           await .searchResponse(TaskResult {
-            await self.gitHubSearchClient.fetchData(query, 1)
+            await self.gitHubSearchClient.apiFetchData(query, 1)
           })
         }
         
@@ -74,7 +74,7 @@ struct GitHubSearchStore: ReducerProtocol {
         state.isLoading = true
         return .task { [query = state.searchQuery, page = state.currentPage] in
           await .paginationResponse(TaskResult {
-            await self.gitHubSearchClient.fetchData(query, page)
+            await self.gitHubSearchClient.apiFetchData(query, page)
           })
         }
         

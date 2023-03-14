@@ -9,7 +9,7 @@ import Foundation
 import ComposableArchitecture
 
 struct GitHubSearchRowStore: ReducerProtocol {
-  let coreDataManager = CoreDataManager.shared
+  @Dependency(\.gitHubSearchClient) var gitHubSearchClient
   
   struct State: Equatable, Identifiable {
     var repo: Repository
@@ -19,7 +19,7 @@ struct GitHubSearchRowStore: ReducerProtocol {
   }
   
   enum Action: Equatable {
-    case toggleStarButtonState(isSuccess: Bool)
+    case toggleStarButtonState(isSuccess: Bool?)
     case tapStarButton
     case showSafari(isShow: Bool)
   }
@@ -27,18 +27,18 @@ struct GitHubSearchRowStore: ReducerProtocol {
   func reduce(into state: inout State, action: Action) -> EffectTask<Action> {
     switch action {
     case .toggleStarButtonState(let isSuccess):
-      if isSuccess {
-        state.starButtonState.toggle()
+      if let isSuccess = isSuccess {
+        state.starButtonState = isSuccess
       }
       return .none
       
     case .tapStarButton:
       return .task { [repo = state.repo, isStore = state.starButtonState] in
         if !isStore {
-          let isSuccess = await coreDataManager.add(repo) == nil ? true : false
+          let isSuccess = await gitHubSearchClient.addToCoreData(repo)
           return .toggleStarButtonState(isSuccess: isSuccess)
         } else {
-          let isSuccess = await coreDataManager.remove(repo) == nil ? true : false
+          let isSuccess = await gitHubSearchClient.removeRepoInCoreData(repo)
           return .toggleStarButtonState(isSuccess: isSuccess)
         }
       }

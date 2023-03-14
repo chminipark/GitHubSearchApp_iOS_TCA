@@ -9,12 +9,14 @@ import Foundation
 import ComposableArchitecture
 
 struct GitHubSearchClient {
-  var fetchData: @Sendable (String, Int) async -> [Repository]
+  var apiFetchData: @Sendable (String, Int) async -> [Repository]
+  var addToCoreData: @Sendable (Repository) async -> Bool?
+  var removeRepoInCoreData: @Sendable (Repository) async -> Bool?
 }
 
 extension GitHubSearchClient: DependencyKey {
   static let liveValue = Self(
-    fetchData: { query, page in
+    apiFetchData: { query, page in
       let searchRepoRequestDTO = SearchRepoRequestDTO(searchText: query, currentPage: page)
       let endpoint = APIEndpoints.searchRepo(with: searchRepoRequestDTO)
       let result = await ProviderImpl.shared.request(endpoint: endpoint)
@@ -25,11 +27,23 @@ extension GitHubSearchClient: DependencyKey {
         print(error.description)
         return []
       }
+    },
+    
+    addToCoreData: { repo in
+      let isSuccess = await CoreDataManager.shared.add(repo) == nil ? true : nil
+      return isSuccess
+    },
+    
+    removeRepoInCoreData: { repo in
+      let isSuccess = await CoreDataManager.shared.remove(repo) == nil ? nil : false
+      return isSuccess
     }
   )
   
   static let testValue = Self(
-    fetchData: unimplemented("\(Self.self) testValue of search")
+    apiFetchData: unimplemented("\(Self.self) testValue of search"),
+    addToCoreData: unimplemented("\(Self.self) testValue of search"),
+    removeRepoInCoreData: unimplemented("\(Self.self) testValue of search")
   )
 }
 

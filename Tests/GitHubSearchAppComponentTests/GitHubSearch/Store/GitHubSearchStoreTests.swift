@@ -38,7 +38,7 @@ final class GitHubSearchStoreTests: XCTestCase {
       initialState: GitHubSearchStore.State(),
       reducer: GitHubSearchStore()
     ) { testDependency in
-      testDependency.gitHubSearchClient.fetchData = { _, _ in
+      testDependency.gitHubSearchClient.apiFetchData = { _, _ in
         return mockRepoList
       }
     }
@@ -75,7 +75,7 @@ final class GitHubSearchStoreTests: XCTestCase {
         searchResults: searchResults
       ),
       reducer: GitHubSearchStore()) { testDependency in
-        testDependency.gitHubSearchClient.fetchData = { _, _ in
+        testDependency.gitHubSearchClient.apiFetchData = { _, _ in
           return mockRepoList
         }
       }
