@@ -7,12 +7,3 @@
 
 import SwiftUI
 import ComposableArchitecture
-
-//struct MyRepoStore: ReducerProtocol {
-//  @Environment(\.managedObjectContext) private var viewContext
-//  @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \MyRepo.name, ascending: false)])
-//  
-//  struct State: Equatable {
-//    var myRepos: FetchedResults<MyRepo>
-//  }
-//}

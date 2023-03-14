@@ -7,7 +7,6 @@
 
 import SwiftUI
 import ComposableArchitecture
-import SafariServices
 
 struct GitHubSearchStore: ReducerProtocol {
   @Dependency(\.gitHubSearchClient) var gitHubSearchClient

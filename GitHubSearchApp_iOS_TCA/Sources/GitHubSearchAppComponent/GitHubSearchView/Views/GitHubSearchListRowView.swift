@@ -7,9 +7,13 @@
 
 import SwiftUI
 import ComposableArchitecture
+import SafariServices
 
 struct GitHubSearchListRowView: View {
   let store: StoreOf<GitHubSearchRowStore>
+  
+  @State var showSafari = false
+  @State var urlString = ""
   
   var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
@@ -32,7 +36,33 @@ struct GitHubSearchListRowView: View {
           Text("\(viewStore.repo.starCount)")
         }
       }
+      .onTapGesture {
+        showSafari = true
+      }
+      .sheet(isPresented: $showSafari) {
+        if let url = URL(string: viewStore.repo.urlString) {
+          SafariView(url: url)
+        } else {
+          EmptyView()
+        }
+      }
     }
+  }
+}
+
+struct SafariView: UIViewControllerRepresentable {
+  let url: URL
+  
+  func makeUIViewController(
+    context: UIViewControllerRepresentableContext<SafariView>
+  ) -> SFSafariViewController {
+    return SFSafariViewController(url: url)
+  }
+  
+  func updateUIViewController(
+    _ uiViewController: SFSafariViewController,
+    context: UIViewControllerRepresentableContext<SafariView>
+  ) {
   }
 }
 
