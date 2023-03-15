@@ -14,28 +14,28 @@ import ComposableArchitecture
 final class GitHubSearchStoreTests: XCTestCase {
   func testBindingSearchTextToSearchQuery() async {
     // given, when
-    let store = TestStore(initialState: GitHubSearchStore.State(),
+    let testStore = TestStore(initialState: GitHubSearchStore.State(),
                           reducer: GitHubSearchStore())
     let testSearchText = "testSearchText"
     
     // then
-    await store.send(.set(\.$searchQuery, testSearchText)) {
+    await testStore.send(.set(\.$searchQuery, testSearchText)) {
       $0.searchQuery = testSearchText
     }
   }
   
-  func testSearchRepo() async {
+  func testSearchRepoAndResponse_Success() async {
     // given, when
     let testSearchText = "123"
     let mockRepoList = Repository.mockRepoList(testSearchText.count)
-    let searchResults: IdentifiedArrayOf<GitHubSearchRowStore.State>
+    let testSearchResults: IdentifiedArrayOf<GitHubSearchRowStore.State>
     = IdentifiedArrayOf(
       uniqueElements: mockRepoList.map { repo in
         GitHubSearchRowStore.State(repo: repo)
       }
     )
-    let store = TestStore(
-      initialState: GitHubSearchStore.State(),
+    let testStore = TestStore(
+      initialState: GitHubSearchStore.State(searchQuery: testSearchText),
       reducer: GitHubSearchStore()
     ) { testDependency in
       testDependency.gitHubSearchClient.apiFetchData = { _, _ in
@@ -44,25 +44,82 @@ final class GitHubSearchStoreTests: XCTestCase {
     }
     
     // then
-    await store.send(.set(\.$searchQuery, testSearchText)) {
-      $0.searchQuery = testSearchText
-    }
-    
-    await store.send(.searchRepo) {
+    await testStore.send(.searchRepo) {
       $0.isLoading = true
     }
     
-    await store.receive(.searchResponse(.success(mockRepoList))) {
-      $0.searchResults = searchResults
+    await testStore.receive(.searchResponse(.success(testSearchResults))) {
+      $0.searchResults = testSearchResults
       $0.isLoading = false
     }
   }
   
-  func testPaginationRepo() async {
+  func testSearchRepoAndResponse_Fail() async {
+    // given, when
+    let testSearchText = "123"
+    let testError = NetworkError.noDataError
+    let mockRepoList = Repository.mockRepoList(testSearchText.count)
+    let testStore = TestStore(
+      initialState: GitHubSearchStore.State(
+        searchQuery: testSearchText
+      ),
+      reducer: GitHubSearchStore()
+    ) { testDependency in
+      testDependency.gitHubSearchClient.apiFetchData = { _, _ in
+        throw testError
+      }
+    }
+    
+    // then
+    await testStore.send(.searchRepo) {
+      $0.isLoading = true
+    }
+
+    await testStore.receive(.searchResponse(.failure(testError))) {
+      $0.isLoading = false
+    }
+  }
+  
+  func testPaginationRepoAndResponse_Success() async {
     // given, when
     let testSearchText = "123"
     let mockRepoList = Repository.mockRepoList(testSearchText.count)
-    let searchResults: IdentifiedArrayOf<GitHubSearchRowStore.State>
+    let testSearchResults: IdentifiedArrayOf<GitHubSearchRowStore.State>
+    = IdentifiedArrayOf(
+      uniqueElements: mockRepoList.map { repo in
+        GitHubSearchRowStore.State(repo: repo)
+      }
+    )
+    let testStore = TestStore(
+      initialState: GitHubSearchStore.State(
+        searchQuery: testSearchText,
+        currentPage: 2,
+        searchResults: testSearchResults
+      ),
+      reducer: GitHubSearchStore()) { testDependency in
+        testDependency.gitHubSearchClient.apiFetchData = { _, _ in
+          return mockRepoList
+        }
+      }
+    
+    // then
+    await testStore.send(.paginationRepo) {
+      $0.isLoading = true
+      $0.currentPage = 3
+    }
+    
+    await testStore.receive(.paginationResponse(.success(testSearchResults))) {
+      $0.searchResults += testSearchResults
+      $0.isLoading = false
+    }
+  }
+  
+  func testPaginationRepoAndResponse_Fail() async {
+    // given, when
+    let testSearchText = "123"
+    let testError = NetworkError.noDataError
+    let mockRepoList = Repository.mockRepoList(testSearchText.count)
+    let testSearchResults: IdentifiedArrayOf<GitHubSearchRowStore.State>
     = IdentifiedArrayOf(
       uniqueElements: mockRepoList.map { repo in
         GitHubSearchRowStore.State(repo: repo)
@@ -72,11 +129,11 @@ final class GitHubSearchStoreTests: XCTestCase {
       initialState: GitHubSearchStore.State(
         searchQuery: testSearchText,
         currentPage: 2,
-        searchResults: searchResults
+        searchResults: testSearchResults
       ),
       reducer: GitHubSearchStore()) { testDependency in
         testDependency.gitHubSearchClient.apiFetchData = { _, _ in
-          return mockRepoList
+          throw testError
         }
       }
     
@@ -86,14 +143,7 @@ final class GitHubSearchStoreTests: XCTestCase {
       $0.currentPage = 3
     }
     
-    await store.receive(.paginationResponse(.success(mockRepoList))) {
-      let response: IdentifiedArrayOf<GitHubSearchRowStore.State>
-      = IdentifiedArrayOf(
-        uniqueElements: mockRepoList.map { repo in
-          GitHubSearchRowStore.State(repo: repo)
-        }
-      )
-      $0.searchResults += response
+    await store.receive(.paginationResponse(.failure(testError))) {
       $0.isLoading = false
     }
   }

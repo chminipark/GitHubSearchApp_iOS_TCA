@@ -42,10 +42,12 @@ struct GitHubSearchStore: ReducerProtocol {
         state.currentPage = 1
         state.isLoading = true
         return .task { [query = state.searchQuery] in
-          await .searchResponse(TaskResult {
-            let response = await self.gitHubSearchClient.apiFetchData(query, 1)
-            return await matchStarButtonStates(response)
-          })
+          await .searchResponse(
+            TaskResult {
+              let repos = try await self.gitHubSearchClient.apiFetchData(query, 1)
+              return await matchStarButtonStates(repos)
+            }
+          )
         }
         
       case .searchResponse(.success(let response)):
@@ -53,8 +55,8 @@ struct GitHubSearchStore: ReducerProtocol {
         state.isLoading = false
         return .none
         
-      case .searchResponse(.failure):
-        print(".searchResponse Error")
+      case .searchResponse(.failure(let error)):
+        print(".searchResponse Error : \(error)")
         state.isLoading = false
         return .none
         
@@ -65,10 +67,12 @@ struct GitHubSearchStore: ReducerProtocol {
         state.currentPage += 1
         state.isLoading = true
         return .task { [query = state.searchQuery, page = state.currentPage] in
-          await .paginationResponse(TaskResult {
-            let response = await self.gitHubSearchClient.apiFetchData(query, page)
-            return await matchStarButtonStates(response)
-          })
+          await .paginationResponse(
+            TaskResult {
+              let response = try await self.gitHubSearchClient.apiFetchData(query, page)
+              return await matchStarButtonStates(response)
+            }
+          )
         }
         
       case .paginationResponse(.success(let response)):
@@ -76,8 +80,8 @@ struct GitHubSearchStore: ReducerProtocol {
         state.isLoading = false
         return .none
         
-      case .paginationResponse(.failure):
-        print(".paginationResponse Error")
+      case .paginationResponse(.failure(let error)):
+        print(".paginationResponse Error : \(error)")
         state.isLoading = false
         return .none
         

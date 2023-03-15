@@ -9,7 +9,11 @@ import Foundation
 import ComposableArchitecture
 
 struct GitHubSearchClient {
-  var apiFetchData: @Sendable (String, Int) async -> [Repository]
+//  var apiFetchData: @Sendable (String, Int) async -> [Repository]
+  
+  var apiFetchData: @Sendable (String, Int) async throws -> [Repository]
+  
+  
   var addToCoreData: @Sendable (Repository) async -> Bool?
   var removeRepoInCoreData: @Sendable (Repository) async -> Bool?
 }
@@ -20,12 +24,12 @@ extension GitHubSearchClient: DependencyKey {
       let searchRepoRequestDTO = SearchRepoRequestDTO(searchText: query, currentPage: page)
       let endpoint = APIEndpoints.searchRepo(with: searchRepoRequestDTO)
       let result = await ProviderImpl.shared.request(endpoint: endpoint)
+      
       switch result {
       case .success(let response):
         return response.toDomain()
       case .failure(let error):
-        print(error.description)
-        return []
+        throw error
       }
     },
     
