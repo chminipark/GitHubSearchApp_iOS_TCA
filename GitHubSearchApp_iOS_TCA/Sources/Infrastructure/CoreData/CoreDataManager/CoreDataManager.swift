@@ -74,3 +74,14 @@ extension CoreDataManager {
     }
   }
 }
+
+extension CoreDataManager {
+  func inCoreData(_ repo: Repository) -> Bool {
+    let context = coreDataStorage.mainContext
+    if let savedRepo = fetch(repo, context: context) {
+      return true
+    } else {
+      return false
+    }
+  }
+}
