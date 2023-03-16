@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		BD26422529C20073007A9C89 /* GitHubSearchRowStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD26422429C20073007A9C89 /* GitHubSearchRowStoreTests.swift */; };
+		BD26422929C2AF7D007A9C89 /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD26422829C2AF7D007A9C89 /* SafariView.swift */; };
+		BD26422C29C30584007A9C89 /* MyRepoListStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD26422B29C30584007A9C89 /* MyRepoListStore.swift */; };
 		BD537BA229A8EAE70024A871 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD537BA129A8EAE70024A871 /* RootView.swift */; };
 		BD537BD529A8F7240024A871 /* GitHubSearchStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD537BD429A8F7240024A871 /* GitHubSearchStoreTests.swift */; };
 		BD55EF4F29A60EBE006E740D /* GitHubSearchApp_iOS_TCAApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD55EF4E29A60EBE006E740D /* GitHubSearchApp_iOS_TCAApp.swift */; };
@@ -55,6 +57,8 @@
 
 /* Begin PBXFileReference section */
 		BD26422429C20073007A9C89 /* GitHubSearchRowStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubSearchRowStoreTests.swift; sourceTree = "<group>"; };
+		BD26422829C2AF7D007A9C89 /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
+		BD26422B29C30584007A9C89 /* MyRepoListStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRepoListStore.swift; sourceTree = "<group>"; };
 		BD537BA129A8EAE70024A871 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		BD537BCB29A8F51D0024A871 /* GitHubSearchApp_iOS_TCA_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GitHubSearchApp_iOS_TCA_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD537BD429A8F7240024A871 /* GitHubSearchStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubSearchStoreTests.swift; sourceTree = "<group>"; };
@@ -110,6 +114,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BD26422629C2AF09007A9C89 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				BD66F96529B5D40800313967 /* ContentsTabView */,
+				BD537BA329A8EB6C0024A871 /* GitHubSearchView */,
+				BD66F96929B5D6CB00313967 /* MyRepoView */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		BD26422729C2AF3E007A9C89 /* Reusable */ = {
+			isa = PBXGroup;
+			children = (
+				BD26422829C2AF7D007A9C89 /* SafariView.swift */,
+			);
+			path = Reusable;
+			sourceTree = "<group>";
+		};
+		BD26422A29C3040A007A9C89 /* Stores */ = {
+			isa = PBXGroup;
+			children = (
+				BD26422B29C30584007A9C89 /* MyRepoListStore.swift */,
+			);
+			path = Stores;
+			sourceTree = "<group>";
+		};
 		BD537B9E29A8E9950024A871 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -123,9 +153,10 @@
 		BD537B9F29A8E9BF0024A871 /* GitHubSearchAppComponent */ = {
 			isa = PBXGroup;
 			children = (
-				BD66F96529B5D40800313967 /* ContentsTabView */,
-				BD537BA329A8EB6C0024A871 /* GitHubSearchView */,
-				BD66F96929B5D6CB00313967 /* MyRepoView */,
+				BD26422729C2AF3E007A9C89 /* Reusable */,
+				BD932B8029BF599500599572 /* Dependency */,
+				BD66F97E29B7666100313967 /* Data */,
+				BD26422629C2AF09007A9C89 /* View */,
 			);
 			path = GitHubSearchAppComponent;
 			sourceTree = "<group>";
@@ -141,21 +172,19 @@
 		BD537BA329A8EB6C0024A871 /* GitHubSearchView */ = {
 			isa = PBXGroup;
 			children = (
-				BD932B8029BF599500599572 /* Dependency */,
-				BD66F97E29B7666100313967 /* Data */,
 				BD537BA529A8EB720024A871 /* Views */,
-				BD537BA429A8EB6F0024A871 /* Store */,
+				BD537BA429A8EB6F0024A871 /* Stores */,
 			);
 			path = GitHubSearchView;
 			sourceTree = "<group>";
 		};
-		BD537BA429A8EB6F0024A871 /* Store */ = {
+		BD537BA429A8EB6F0024A871 /* Stores */ = {
 			isa = PBXGroup;
 			children = (
 				BD5CCE9F29ACE8E100A7FC9E /* GitHubSearchStore.swift */,
 				BD932B7E29BF593900599572 /* GitHubSearchRowStore.swift */,
 			);
-			path = Store;
+			path = Stores;
 			sourceTree = "<group>";
 		};
 		BD537BA529A8EB720024A871 /* Views */ = {
@@ -286,6 +315,7 @@
 			isa = PBXGroup;
 			children = (
 				BD66F96A29B5D6FB00313967 /* Views */,
+				BD26422A29C3040A007A9C89 /* Stores */,
 			);
 			path = MyRepoView;
 			sourceTree = "<group>";
@@ -559,6 +589,7 @@
 				BD66F98629B766B400313967 /* SearchRepoResponseDTO.swift in Sources */,
 				BD66F97B29B61D1A00313967 /* Responsable.swift in Sources */,
 				BD5CCEA029ACE8E100A7FC9E /* GitHubSearchStore.swift in Sources */,
+				BD26422C29C30584007A9C89 /* MyRepoListStore.swift in Sources */,
 				BD55EF6029A7971D006E740D /* GitHubSearchListView.swift in Sources */,
 				BD66F96C29B5D70500313967 /* MyRepoListView.swift in Sources */,
 				BD66F97729B61B8600313967 /* Requestable.swift in Sources */,
@@ -571,6 +602,7 @@
 				BD66F97D29B61DFC00313967 /* Provider.swift in Sources */,
 				BD66F96829B5D49900313967 /* ContentsTabView.swift in Sources */,
 				BD932B7F29BF593900599572 /* GitHubSearchRowStore.swift in Sources */,
+				BD26422929C2AF7D007A9C89 /* SafariView.swift in Sources */,
 				BD932B6E29BB453000599572 /* CoreDataStorage.swift in Sources */,
 				BD932B8229BF59B200599572 /* GitHubSearchClient.swift in Sources */,
 				BD61778229BB04E8003002D2 /* MyRepo.xcdatamodeld in Sources */,
