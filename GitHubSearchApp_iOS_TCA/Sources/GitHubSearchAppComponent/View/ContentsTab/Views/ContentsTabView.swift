@@ -24,13 +24,18 @@ struct ContentsTabView: View {
         }
       }
       
-      MyRepoListView()
-        .tabItem {
-          VStack {
-            Image(systemName: "bookmark")
-            Text("Favorite")
-          }
+      MyRepoListView(
+        store: Store(
+          initialState: MyRepoListStore.State(),
+          reducer: MyRepoListStore()
+        )
+      )
+      .tabItem {
+        VStack {
+          Image(systemName: "bookmark")
+          Text("Favorite")
         }
+      }
     }
   }
 }

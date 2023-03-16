@@ -33,6 +33,9 @@ struct GitHubSearchListView: View {
             }
           }
         }
+        .sheet(isPresented: viewStore.binding(\.$showSafari)) {
+          SafariView(url: viewStore.url!)
+        }
         .navigationTitle("GitHubSearch")
         .searchable(text: viewStore.binding(\.$searchQuery))
         .task(id: viewStore.searchQuery) {

@@ -6,24 +6,35 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 struct MyRepoListView: View {
   @Environment(\.managedObjectContext) private var viewContext
   @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \MyRepo.name, ascending: false)])
   private var myRepos: FetchedResults<MyRepo>
   
+  let store: StoreOf<MyRepoListStore>
+  
   var body: some View {
-    NavigationView {
-      List {
-        ForEach(myRepos) { myRepo in
-          if let repo = myRepo.toDomain() {
-            myRepoRow(repo)
-          } else {
-            EmptyView()
+    WithViewStore(store, observe: { $0 }) { viewStore in
+      NavigationView {
+        List {
+          ForEach(myRepos) { myRepo in
+            if let repo = myRepo.toDomain() {
+              myRepoRow(repo)
+                .onTapGesture {
+                  viewStore.send(.tapListCell(selectedItem: repo))
+                }
+            } else {
+              EmptyView()
+            }
           }
         }
+        .sheet(isPresented: viewStore.binding(\.$showSafari)) {
+          SafariView(url: viewStore.url!)
+        }
+        .navigationTitle("MyRepo")
       }
-      .navigationTitle("MyRepo")
     }
   }
 
