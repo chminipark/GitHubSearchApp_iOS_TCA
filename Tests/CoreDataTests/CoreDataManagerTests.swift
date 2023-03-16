@@ -26,7 +26,7 @@ class CoreDataManagerTests: XCTestCase {
   
   func testAddRepo() async {
     // given
-    let mockRepo = Repository.mock()
+    let mockRepo = Repository.mock(1)
     
     // when
     let addError = await coreDataManager.add(mockRepo)
@@ -37,7 +37,7 @@ class CoreDataManagerTests: XCTestCase {
   
   func testRemoveRepo() async {
     // given
-    let mockRepo = Repository.mock()
+    let mockRepo = Repository.mock(2)
     
     // when
     let addError = await coreDataManager.add(mockRepo)
@@ -46,5 +46,18 @@ class CoreDataManagerTests: XCTestCase {
     // then
     XCTAssertNil(addError)
     XCTAssertNil(removeError)
+  }
+  
+  func testInCoreData() async {
+    // given
+    let mockRepo = Repository.mock(3)
+    
+    // when
+    let addError = await coreDataManager.add(mockRepo)
+    XCTAssertNil(addError)
+    
+    // then
+    let inCoreData: Bool = coreDataManager.inCoreData(mockRepo)
+    XCTAssertEqual(inCoreData, true)
   }
 }

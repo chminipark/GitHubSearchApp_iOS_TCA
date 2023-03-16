@@ -14,11 +14,11 @@ struct Repository: Equatable, Identifiable {
   var urlString: String
   var id: String { self.urlString }
   
-  static func mock() -> Repository {
-    Repository(name: "repository name",
-               description: "repository description",
-               starCount: 100,
-               urlString: "urlString"
+  static func mock(_ index: Int = 1) -> Repository {
+    Repository(name: "repository name : \(index)",
+               description: "repository description : \(index)",
+               starCount: index,
+               urlString: "urlString : \(index)"
     )
   }
   

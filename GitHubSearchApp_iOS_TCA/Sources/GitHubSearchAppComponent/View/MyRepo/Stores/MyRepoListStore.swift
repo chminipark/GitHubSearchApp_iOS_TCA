@@ -25,6 +25,7 @@ struct MyRepoListStore: ReducerProtocol {
       switch action {
       case .binding:
         return .none
+        
       case .tapListCell(let selectedRepo):
         if let url = URL(string: selectedRepo.urlString) {
           state.url = url
