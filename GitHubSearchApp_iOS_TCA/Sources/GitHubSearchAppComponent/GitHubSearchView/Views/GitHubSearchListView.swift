@@ -17,7 +17,7 @@ struct GitHubSearchListView: View {
         List {
           ForEachStore(store.scope(
             state: \.searchResults,
-            action: GitHubSearchStore.Action.didTapStarButton(id: action:))
+            action: GitHubSearchStore.Action.forEachRepos(id: action:))
           ) { myStore in
             GitHubSearchListRowView(store: myStore)
           }

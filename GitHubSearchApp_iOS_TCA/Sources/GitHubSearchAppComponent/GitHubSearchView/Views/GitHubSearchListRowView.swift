@@ -7,6 +7,7 @@
 
 import SwiftUI
 import ComposableArchitecture
+import SafariServices
 
 struct GitHubSearchListRowView: View {
   let store: StoreOf<GitHubSearchRowStore>
@@ -32,44 +33,32 @@ struct GitHubSearchListRowView: View {
           Text("\(viewStore.repo.starCount)")
         }
       }
+      .onTapGesture {
+        viewStore.send(.showSafari(isShow: true))
+      }
+      .sheet(isPresented: viewStore.binding(
+        get: \.isShowSafari,
+        send: GitHubSearchRowStore.Action.showSafari(isShow:))
+      ) {
+        SafariView(url: URL(string: viewStore.repo.urlString)!)
+      }
     }
   }
 }
 
-struct GitHubSearchRowStore: ReducerProtocol {
-  let coreDataManager = CoreDataManager.shared
+struct SafariView: UIViewControllerRepresentable {
+  let url: URL
   
-  struct State: Equatable, Identifiable {
-    var repo: Repository
-    var starButtonState = false
-    var id: String { repo.urlString }
+  func makeUIViewController(
+    context: UIViewControllerRepresentableContext<SafariView>
+  ) -> SFSafariViewController {
+    return SFSafariViewController(url: url)
   }
   
-  enum Action: Equatable {
-    case toggleStarButtonState(isSuccess: Bool)
-    case tapStarButton
-  }
-  
-  func reduce(into state: inout State, action: Action) -> EffectTask<Action> {
-    switch action {
-    case .toggleStarButtonState(let isSuccess):
-      if isSuccess {
-        state.starButtonState.toggle()
-      }
-      return .none
-      
-    case .tapStarButton:
-      print(".tapStarButton in GitHubSearchRowStore")
-      return .task { [repo = state.repo, isStore = state.starButtonState] in
-        if !isStore {
-          let isSuccess = await coreDataManager.add(repo) == nil ? true : false
-          return .toggleStarButtonState(isSuccess: isSuccess)
-        } else {
-          let isSuccess = await coreDataManager.remove(repo) == nil ? true : false
-          return .toggleStarButtonState(isSuccess: isSuccess)
-        }
-      }
-    }
+  func updateUIViewController(
+    _ uiViewController: SFSafariViewController,
+    context: UIViewControllerRepresentableContext<SafariView>
+  ) {
   }
 }
 

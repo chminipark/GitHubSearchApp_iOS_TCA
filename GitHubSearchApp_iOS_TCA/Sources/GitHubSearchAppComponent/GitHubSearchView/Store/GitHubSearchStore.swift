@@ -10,7 +10,6 @@ import ComposableArchitecture
 
 struct GitHubSearchStore: ReducerProtocol {
   @Dependency(\.gitHubSearchClient) var gitHubSearchClient
-  let coreDataManager = CoreDataManager.shared
   
   struct State: Equatable {
     @BindingState var searchQuery = ""
@@ -22,11 +21,11 @@ struct GitHubSearchStore: ReducerProtocol {
   enum Action: BindableAction, Equatable {
     case binding(BindingAction<State>)
     case searchRepo
-    case searchResponse(TaskResult<[Repository]>)
+    case searchResponse(TaskResult<IdentifiedArrayOf<GitHubSearchRowStore.State>>)
     case paginationRepo
-    case paginationResponse(TaskResult<[Repository]>)
-    case didTapStarButton(id: GitHubSearchRowStore.State.ID,
-                          action: GitHubSearchRowStore.Action)
+    case paginationResponse(TaskResult<IdentifiedArrayOf<GitHubSearchRowStore.State>>)
+    case forEachRepos(id: GitHubSearchRowStore.State.ID,
+                      action: GitHubSearchRowStore.Action)
   }
   
   var body: some ReducerProtocol<State, Action> {
@@ -43,26 +42,21 @@ struct GitHubSearchStore: ReducerProtocol {
         state.currentPage = 1
         state.isLoading = true
         return .task { [query = state.searchQuery] in
-          await .searchResponse(TaskResult {
-            await self.gitHubSearchClient.fetchData(query, 1)
-          })
-        }
-        
-      case .searchResponse(.success(let response)):
-        state.searchResults = []
-        for repo in response {
-          let starButtonState = coreDataManager.inCoreData(repo)
-          state.searchResults.append(
-            GitHubSearchRowStore.State(repo: repo,
-                                       starButtonState: starButtonState)
+          await .searchResponse(
+            TaskResult {
+              let repos = try await self.gitHubSearchClient.apiFetchData(query, 1)
+              return await matchStarButtonStates(repos)
+            }
           )
         }
         
+      case .searchResponse(.success(let response)):
+        state.searchResults = response
         state.isLoading = false
         return .none
         
-      case .searchResponse(.failure):
-        print(".searchResponse Error")
+      case .searchResponse(.failure(let error)):
+        print(".searchResponse Error : \(error)")
         state.isLoading = false
         return .none
         
@@ -73,84 +67,51 @@ struct GitHubSearchStore: ReducerProtocol {
         state.currentPage += 1
         state.isLoading = true
         return .task { [query = state.searchQuery, page = state.currentPage] in
-          await .paginationResponse(TaskResult {
-            await self.gitHubSearchClient.fetchData(query, page)
-          })
-        }
-        
-      case .paginationResponse(.success(let response)):
-        for repo in response {
-          let starButtonState = coreDataManager.inCoreData(repo)
-          state.searchResults.append(
-            GitHubSearchRowStore.State(repo: repo,
-                                       starButtonState: starButtonState)
+          await .paginationResponse(
+            TaskResult {
+              let response = try await self.gitHubSearchClient.apiFetchData(query, page)
+              return await matchStarButtonStates(response)
+            }
           )
         }
         
+      case .paginationResponse(.success(let response)):
+        state.searchResults += response
         state.isLoading = false
         return .none
         
-      case .paginationResponse(.failure):
-        print(".paginationResponse Error")
+      case .paginationResponse(.failure(let error)):
+        print(".paginationResponse Error : \(error)")
         state.isLoading = false
         return .none
         
-      case .didTapStarButton(id: _, action: .tapStarButton):
-        print(".didTapStarButton in GitHubSearchStore, didTapStarButton")
+      case .forEachRepos(id: let id, action: .tapStarButton):
         return .none
         
-      case .didTapStarButton(id: let id, action: .toggleStarButtonState(isSuccess: let isSuccess)):
-        print(".didTapStarButton in GitHubSearchStore, toggleStarButtonState : \(isSuccess)")
+      case .forEachRepos(id: let id, action: .toggleStarButtonState):
+        return .none
+        
+      case .forEachRepos(id: let id, action: .showSafari):
         return .none
       }
     }
-    .forEach(\.searchResults, action: /Action.didTapStarButton(id: action:)) {
+    .forEach(\.searchResults, action: /Action.forEachRepos(id: action:)) {
       GitHubSearchRowStore()
     }
   }
-}
-
-// MARK: - API client interface
-
-struct GitHubSearchClient {
-  var fetchData: @Sendable (String, Int) async -> [Repository]
-}
-
-extension GitHubSearchClient: DependencyKey {
-  static let liveValue = Self(
-    fetchData: { query, page in
-      let searchRepoRequestDTO = SearchRepoRequestDTO(searchText: query, currentPage: page)
-      let endpoint = APIEndpoints.searchRepo(with: searchRepoRequestDTO)
-      let result = await ProviderImpl.shared.request(endpoint: endpoint)
-      switch result {
-      case .success(let response):
-        return response.toDomain()
-      case .failure(let error):
-        print(error.description)
-        return []
-      }
-    }
-  )
   
-  static let testValue = Self(
-    fetchData: unimplemented("\(Self.self) testValue of search")
-  )
-}
-
-extension DependencyValues {
-  var gitHubSearchClient: GitHubSearchClient {
-    get { self[GitHubSearchClient.self] }
-    set { self[GitHubSearchClient.self] = newValue }
-  }
-}
-
-extension CoreDataManager {
-  func inCoreData(_ repo: Repository) -> Bool {
-    let context = coreDataStorage.mainContext
-    if let savedRepo = fetch(repo, context: context) {
-      return true
-    } else {
-      return false
+  func matchStarButtonStates(_ repos: [Repository])
+  async -> IdentifiedArrayOf<GitHubSearchRowStore.State> {
+    var rowStoreStates: IdentifiedArrayOf<GitHubSearchRowStore.State> = []
+    for repo in repos {
+      let starButtonState = CoreDataManager.shared.inCoreData(repo)
+      rowStoreStates.append(
+        GitHubSearchRowStore.State(
+          repo: repo,
+          starButtonState: starButtonState
+        )
+      )
     }
+    return rowStoreStates
   }
 }
