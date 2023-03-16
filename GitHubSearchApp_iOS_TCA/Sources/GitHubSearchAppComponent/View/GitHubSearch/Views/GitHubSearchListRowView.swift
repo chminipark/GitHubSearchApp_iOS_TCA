@@ -44,7 +44,7 @@ struct GitHubSearchListRowView_Previews: PreviewProvider {
   static var previews: some View {
     GitHubSearchListRowView(
       store: Store(
-        initialState: GitHubSearchRowStore.State(repo: .mock()),
+        initialState: GitHubSearchRowStore.State(repo: .mock(), id: .init()),
         reducer: GitHubSearchRowStore()
       )
     )

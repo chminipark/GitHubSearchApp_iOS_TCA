@@ -14,7 +14,13 @@ struct GitHubSearchRowStore: ReducerProtocol {
   struct State: Equatable, Identifiable {
     var repo: Repository
     var starButtonState = false
-    var id: String { repo.urlString }
+    let id: UUID
+    
+    init(repo: Repository, starButtonState: Bool = false, id: UUID = UUID()) {
+      self.repo = repo
+      self.starButtonState = starButtonState
+      self.id = id
+    }
   }
   
   enum Action: Equatable {

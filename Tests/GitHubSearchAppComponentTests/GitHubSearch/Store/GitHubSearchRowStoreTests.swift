@@ -85,8 +85,6 @@ final class GitHubSearchRowStoreTests: XCTestCase {
       reducer: GitHubSearchRowStore()
     )
     
-    await testStore.send(.showSafari(isShow: true)) {
-      $0.isShowSafari = true
-    }
+    await testStore.send(.showSafari)
   }
 }

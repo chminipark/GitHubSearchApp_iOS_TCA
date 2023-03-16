@@ -6,6 +6,7 @@
 //
 
 import CoreData
+import ComposableArchitecture
 
 class CoreDataManager {
   let coreDataStorage: CoreDataStorage
@@ -73,9 +74,7 @@ extension CoreDataManager {
       return .removeError
     }
   }
-}
-
-extension CoreDataManager {
+  
   func inCoreData(_ repo: Repository) -> Bool {
     let context = coreDataStorage.mainContext
     if let savedRepo = fetch(repo, context: context) {

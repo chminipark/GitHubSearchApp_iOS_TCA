@@ -47,8 +47,8 @@ struct GitHubSearchStore: ReducerProtocol {
         return .task { [query = state.searchQuery] in
           await .searchResponse(
             TaskResult {
-              let repos = try await self.gitHubSearchClient.apiFetchData(query, 1)
-              return await matchStarButtonStates(repos)
+              let response = try await self.gitHubSearchClient.apiFetchData(query, 1)
+              return await self.gitHubSearchClient.matchStarButtonStates(response)
             }
           )
         }
@@ -73,7 +73,7 @@ struct GitHubSearchStore: ReducerProtocol {
           await .paginationResponse(
             TaskResult {
               let response = try await self.gitHubSearchClient.apiFetchData(query, page)
-              return await matchStarButtonStates(response)
+              return await self.gitHubSearchClient.matchStarButtonStates(response)
             }
           )
         }
@@ -106,20 +106,5 @@ struct GitHubSearchStore: ReducerProtocol {
     .forEach(\.searchResults, action: /Action.forEachRepos(id: action:)) {
       GitHubSearchRowStore()
     }
-  }
-  
-  func matchStarButtonStates(_ repos: [Repository])
-  async -> IdentifiedArrayOf<GitHubSearchRowStore.State> {
-    var rowStoreStates: IdentifiedArrayOf<GitHubSearchRowStore.State> = []
-    for repo in repos {
-      let starButtonState = CoreDataManager.shared.inCoreData(repo)
-      rowStoreStates.append(
-        GitHubSearchRowStore.State(
-          repo: repo,
-          starButtonState: starButtonState
-        )
-      )
-    }
-    return rowStoreStates
   }
 }

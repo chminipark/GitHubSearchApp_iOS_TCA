@@ -41,6 +41,10 @@ final class GitHubSearchStoreTests: XCTestCase {
       testDependency.gitHubSearchClient.apiFetchData = { _, _ in
         return mockRepoList
       }
+      
+      testDependency.gitHubSearchClient.matchStarButtonStates = { _ in
+        return testSearchResults
+      }
     }
     
     // then
@@ -58,7 +62,6 @@ final class GitHubSearchStoreTests: XCTestCase {
     // given, when
     let testSearchText = "123"
     let testError = NetworkError.noDataError
-    let mockRepoList = Repository.mockRepoList(testSearchText.count)
     let testStore = TestStore(
       initialState: GitHubSearchStore.State(
         searchQuery: testSearchText
@@ -100,6 +103,10 @@ final class GitHubSearchStoreTests: XCTestCase {
         testDependency.gitHubSearchClient.apiFetchData = { _, _ in
           return mockRepoList
         }
+        
+        testDependency.gitHubSearchClient.matchStarButtonStates = { _ in
+          return testSearchResults
+        }
       }
     
     // then
@@ -125,7 +132,7 @@ final class GitHubSearchStoreTests: XCTestCase {
         GitHubSearchRowStore.State(repo: repo)
       }
     )
-    let store = TestStore(
+    let testStore = TestStore(
       initialState: GitHubSearchStore.State(
         searchQuery: testSearchText,
         currentPage: 2,
@@ -138,12 +145,12 @@ final class GitHubSearchStoreTests: XCTestCase {
       }
     
     // then
-    await store.send(.paginationRepo) {
+    await testStore.send(.paginationRepo) {
       $0.isLoading = true
       $0.currentPage = 3
     }
     
-    await store.receive(.paginationResponse(.failure(testError))) {
+    await testStore.receive(.paginationResponse(.failure(testError))) {
       $0.isLoading = false
     }
   }
