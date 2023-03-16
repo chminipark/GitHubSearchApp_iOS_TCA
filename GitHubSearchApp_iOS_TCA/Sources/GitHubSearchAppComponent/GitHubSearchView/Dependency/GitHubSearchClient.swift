@@ -9,11 +9,7 @@ import Foundation
 import ComposableArchitecture
 
 struct GitHubSearchClient {
-//  var apiFetchData: @Sendable (String, Int) async -> [Repository]
-  
   var apiFetchData: @Sendable (String, Int) async throws -> [Repository]
-  
-  
   var addToCoreData: @Sendable (Repository) async -> Bool?
   var removeRepoInCoreData: @Sendable (Repository) async -> Bool?
 }

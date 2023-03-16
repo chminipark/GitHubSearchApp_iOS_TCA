@@ -26,12 +26,7 @@ class CoreDataManagerTests: XCTestCase {
   
   func testAddRepo() async {
     // given
-    let mockRepo = Repository(
-      name: "repository name",
-      description: "repository description",
-      starCount: 100,
-      urlString: "repository urlString"
-    )
+    let mockRepo = Repository.mock()
     
     // when
     let addError = await coreDataManager.add(mockRepo)
@@ -42,12 +37,7 @@ class CoreDataManagerTests: XCTestCase {
   
   func testRemoveRepo() async {
     // given
-    let mockRepo = Repository(
-      name: "repository name",
-      description: "repository description",
-      starCount: 100,
-      urlString: "repository urlString"
-    )
+    let mockRepo = Repository.mock()
     
     // when
     let addError = await coreDataManager.add(mockRepo)
