@@ -9,6 +9,8 @@ import ComposableArchitecture
 import Foundation
 
 struct MyRepoListStore: ReducerProtocol {
+  @Dependency(\.gitHubSearchClient) var gitHubSearchClient
+  
   struct State: Equatable {
     var url: URL? = nil
     @BindingState var showSafari = false
@@ -17,6 +19,7 @@ struct MyRepoListStore: ReducerProtocol {
   enum Action: BindableAction, Equatable {
     case binding(BindingAction<State>)
     case tapListCell(selectedItem: Repository)
+    case tapStarButton(selectedItem: Repository)
   }
   
   var body: some ReducerProtocol<State, Action> {
@@ -30,6 +33,12 @@ struct MyRepoListStore: ReducerProtocol {
         if let url = URL(string: selectedRepo.urlString) {
           state.url = url
           state.showSafari.toggle()
+        }
+        return .none
+        
+      case .tapStarButton(let selectedRepo):
+        Task {
+          await gitHubSearchClient.removeRepoInCoreData(selectedRepo)
         }
         return .none
       }

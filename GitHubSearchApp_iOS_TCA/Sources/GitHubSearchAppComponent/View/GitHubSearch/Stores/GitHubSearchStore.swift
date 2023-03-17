@@ -88,10 +88,10 @@ struct GitHubSearchStore: ReducerProtocol {
         state.isLoading = false
         return .none
         
-      case .forEachRepos(id: let id, action: .tapStarButton):
+      case .forEachRepos(id: _, action: .tapStarButton):
         return .none
         
-      case .forEachRepos(id: let id, action: .toggleStarButtonState):
+      case .forEachRepos(id: _, action: .toggleStarButtonState):
         return .none
         
       case .forEachRepos(id: let id, action: .showSafari):

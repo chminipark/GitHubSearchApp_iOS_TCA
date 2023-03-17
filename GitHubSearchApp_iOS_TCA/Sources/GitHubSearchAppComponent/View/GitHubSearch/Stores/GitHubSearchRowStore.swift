@@ -39,13 +39,8 @@ struct GitHubSearchRowStore: ReducerProtocol {
       
     case .tapStarButton:
       return .task { [repo = state.repo, isStore = state.starButtonState] in
-        if !isStore {
-          let isSuccess = await gitHubSearchClient.addToCoreData(repo)
-          return .toggleStarButtonState(isSuccess: isSuccess)
-        } else {
-          let isSuccess = await gitHubSearchClient.removeRepoInCoreData(repo)
-          return .toggleStarButtonState(isSuccess: isSuccess)
-        }
+        let isSuccess = await isStore ? gitHubSearchClient.removeRepoInCoreData(repo) : gitHubSearchClient.addToCoreData(repo)
+        return .toggleStarButtonState(isSuccess: isSuccess)
       }
       
     case .showSafari:
