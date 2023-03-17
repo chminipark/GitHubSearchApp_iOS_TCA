@@ -15,13 +15,15 @@ struct MyRepoListView: View {
   
   let store: StoreOf<MyRepoListStore>
   
+  
+  
   var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       NavigationView {
         List {
           ForEach(myRepos) { myRepo in
             if let repo = myRepo.toDomain() {
-              myRepoRow(repo)
+              myRepoRow(repo: repo, viewStore: viewStore)
                 .onTapGesture {
                   viewStore.send(.tapListCell(selectedItem: repo))
                 }
@@ -37,8 +39,11 @@ struct MyRepoListView: View {
       }
     }
   }
-
-  func myRepoRow(_ repo: Repository) -> some View {
+  
+  func myRepoRow(
+    repo: Repository,
+    viewStore: ViewStore<MyRepoListStore.State, MyRepoListStore.Action>
+  ) -> some View {
     HStack {
       VStack(alignment: .leading) {
         Text(repo.name)
@@ -50,9 +55,11 @@ struct MyRepoListView: View {
       
       VStack {
         Button {
-          Task {
-            let removeError = await CoreDataManager.shared.remove(repo)
-          }
+//          Task {
+////            let removeError = await CoreDataManager.shared.remove(repo)
+//            
+//          }
+          viewStore.send(.tapStarButton(selectedItem: repo))
         } label: {
           Image(systemName: "star.fill")
         }

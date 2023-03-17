@@ -36,7 +36,7 @@ extension GitHubSearchClient: DependencyKey {
     },
     
     removeRepoInCoreData: { repo in
-      let isSuccess = await CoreDataManager.shared.remove(repo) == nil ? nil : false
+      let isSuccess = await CoreDataManager.shared.remove(repo) == nil ? false : nil
       return isSuccess
     },
     

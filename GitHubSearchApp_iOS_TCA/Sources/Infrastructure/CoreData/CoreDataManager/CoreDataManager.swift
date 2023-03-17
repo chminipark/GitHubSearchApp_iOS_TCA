@@ -37,7 +37,7 @@ class CoreDataManager {
     }
   }
   
-  func fetch(_ repo: Repository, context: NSManagedObjectContext) -> MyRepo? {
+  fileprivate func fetch(_ repo: Repository, context: NSManagedObjectContext) -> MyRepo? {
     let fetchRequest: NSFetchRequest<MyRepo> = MyRepo.fetchRequest()
     fetchRequest.predicate = NSPredicate(format: "urlString == %@", repo.urlString)
     
@@ -52,8 +52,8 @@ class CoreDataManager {
 extension CoreDataManager {
   func add(_ repo: Repository) async -> CoreDataError? {
     let context = coreDataStorage.mainContext
-    if let savedRepo = fetch(repo, context: context) {
-      return nil
+    guard fetch(repo, context: context) == nil else {
+      return .addError
     }
     
     create(repo, in: context)
@@ -63,24 +63,18 @@ extension CoreDataManager {
   
   func remove(_ repo: Repository) async -> CoreDataError? {
     let context = coreDataStorage.mainContext
-    do {
-      guard let object = fetch(repo, context: context) else {
-        return nil
-      }
-      context.delete(object)
-      try context.save()
-      return nil
-    } catch {
+    
+    guard let savedRepo = fetch(repo, context: context) else {
       return .removeError
     }
+    context.delete(savedRepo)
+    
+    let removeError = await performContext(with: context, coreDataError: .removeError)
+    return removeError
   }
   
   func inCoreData(_ repo: Repository) -> Bool {
     let context = coreDataStorage.mainContext
-    if let savedRepo = fetch(repo, context: context) {
-      return true
-    } else {
-      return false
-    }
+    return fetch(repo, context: context) != nil ? true : false
   }
 }
