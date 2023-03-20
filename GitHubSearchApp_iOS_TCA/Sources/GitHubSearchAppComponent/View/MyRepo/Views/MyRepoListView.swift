@@ -55,10 +55,6 @@ struct MyRepoListView: View {
       
       VStack {
         Button {
-//          Task {
-////            let removeError = await CoreDataManager.shared.remove(repo)
-//            
-//          }
           viewStore.send(.tapStarButton(selectedItem: repo))
         } label: {
           Image(systemName: "star.fill")

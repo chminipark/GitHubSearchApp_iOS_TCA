@@ -12,7 +12,8 @@ import ComposableArchitecture
 
 @MainActor
 final class GitHubSearchRowStoreTests: XCTestCase {
-  func testToggleStarButtonState_Success() async {
+  func test_toggleStarButtonState_Success() async {
+    // given
     let isSuccess = true
     let mockRepo = Repository.mock()
     let testStore = TestStore(
@@ -20,12 +21,14 @@ final class GitHubSearchRowStoreTests: XCTestCase {
       reducer: GitHubSearchRowStore()
     )
     
+    // when, then
     await testStore.send(.toggleStarButtonState(isSuccess: isSuccess)) {
       $0.starButtonState = isSuccess
     }
   }
   
-  func testToggleStarButtonState_Fail() async {
+  func test_toggleStarButtonState_Fail() async {
+    // given
     let isSuccess: Bool? = nil
     let mockRepo = Repository.mock()
     let testStore = TestStore(
@@ -33,10 +36,12 @@ final class GitHubSearchRowStoreTests: XCTestCase {
       reducer: GitHubSearchRowStore()
     )
     
+    // when, then
     await testStore.send(.toggleStarButtonState(isSuccess: isSuccess))
   }
   
-  func testTapStarButton_Add() async {
+  func test_tapStarButtonAndAddToCoreData_Success() async {
+    // given
     let mockRepo = Repository.mock()
     let testStore = TestStore(
       initialState: GitHubSearchRowStore.State(
@@ -50,6 +55,7 @@ final class GitHubSearchRowStoreTests: XCTestCase {
       }
     }
     
+    // when, then
     await testStore.send(.tapStarButton)
     
     await testStore.receive(.toggleStarButtonState(isSuccess: true)) {
@@ -57,7 +63,8 @@ final class GitHubSearchRowStoreTests: XCTestCase {
     }
   }
   
-  func testTapStarButton_Remove() async {
+  func test_tapStarButton_Fail() async {
+    // given
     let mockRepo = Repository.mock()
     let testStore = TestStore(
       initialState: GitHubSearchRowStore.State(
@@ -67,24 +74,25 @@ final class GitHubSearchRowStoreTests: XCTestCase {
       reducer: GitHubSearchRowStore()
     ) { testDependency in
       testDependency.gitHubSearchClient.removeRepoInCoreData = { _ in
-        return false
+        return nil
       }
     }
     
+    // when, then
     await testStore.send(.tapStarButton)
     
-    await testStore.receive(.toggleStarButtonState(isSuccess: false)) {
-      $0.starButtonState = false
-    }
+    await testStore.receive(.toggleStarButtonState(isSuccess: nil))
   }
   
-  func testShowSafari() async {
+  func test_showSafari() async {
+    // given
     let mockRepo = Repository.mock()
     let testStore = TestStore(
       initialState: GitHubSearchRowStore.State(repo: mockRepo),
       reducer: GitHubSearchRowStore()
     )
     
+    // when, then
     await testStore.send(.showSafari)
   }
 }

@@ -11,23 +11,36 @@ import ComposableArchitecture
 
 @MainActor
 final class MyRepoListStoreTests: XCTestCase {
-  func testTapListCell() async {
+  func test_tapListCell() async {
+    // given
     let testStore = TestStore(
       initialState: MyRepoListStore.State(),
       reducer: MyRepoListStore()
     )
+    let selectedItem: Repository = .mock()
     
-    let selectedItem = Repository(
-      name: "swift-composable-architecture",
-      description: "A library for building applications in a consistent and understandable way, with composition, testing, and ergonomics in mind.",
-      starCount: 8200,
-      urlString: "https://github.com/pointfreeco/swift-composable-architecture"
-    )
-    
-    let url = URL(string: selectedItem.urlString)!
+    // when, then
     await testStore.send(.tapListCell(selectedItem: selectedItem)) {
-      $0.url = url
-      $0.showSafari.toggle()
+      if let url = URL(string: selectedItem.urlString) {
+        $0.url = url
+        $0.showSafari.toggle()
+      }
     }
+  }
+  
+  func test_tapStarButton() async {
+    // given
+    let mockRepo: Repository = .mock()
+    let testStore = TestStore(
+      initialState: MyRepoListStore.State(),
+      reducer: MyRepoListStore()
+    ) { testDependency in
+      testDependency.gitHubSearchClient.removeRepoInCoreData = { _ in
+        return false
+      }
+    }
+    
+    // when, then
+    await testStore.send(.tapStarButton(selectedItem: mockRepo))
   }
 }

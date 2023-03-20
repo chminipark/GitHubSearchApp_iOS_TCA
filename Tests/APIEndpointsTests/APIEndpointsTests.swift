@@ -23,7 +23,7 @@ final class APIEndpointsTests: XCTestCase {
     self.providerImpl = nil
   }
   
-  func test_ProviderRequestWithSearchRepo_Success() async {
+  func test_providerRequestWithSearchRepo_Success() async {
     // given
     let searchRepoRequestDTO = SearchRepoRequestDTO(searchText: "searchText", currentPage: 1)
     let endpoint = APIEndpoints.searchRepo(with: searchRepoRequestDTO)
@@ -40,7 +40,7 @@ final class APIEndpointsTests: XCTestCase {
     }
   }
   
-  func test_ProviderRequestWithSearchRepo_Fail() async {
+  func test_providerRequestWithSearchRepo_Fail() async {
     // given
     let searchRepoRequestDTO = SearchRepoRequestDTO(searchText: "searchText", currentPage: 1)
     let endpoint = APIEndpoints.searchRepo(with: searchRepoRequestDTO)

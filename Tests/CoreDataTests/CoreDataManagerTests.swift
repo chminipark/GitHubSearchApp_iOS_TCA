@@ -9,7 +9,7 @@ import XCTest
 import CoreData
 @testable import GitHubSearchApp_iOS_TCA
 
-class CoreDataManagerTests: XCTestCase {
+final class CoreDataManagerTests: XCTestCase {
   var coreDataStorage: TestCoreDataStorage!
   var coreDataManager: CoreDataManager!
   
@@ -24,7 +24,7 @@ class CoreDataManagerTests: XCTestCase {
     self.coreDataManager = nil
   }
   
-  func testAddRepo() async {
+  func test_addRepo() async {
     // given
     let mockRepo = Repository.mock(1)
     
@@ -35,7 +35,7 @@ class CoreDataManagerTests: XCTestCase {
     XCTAssertNil(addError)
   }
   
-  func testRemoveRepo() async {
+  func test_removeRepo() async {
     // given
     let mockRepo = Repository.mock(2)
     
@@ -48,16 +48,16 @@ class CoreDataManagerTests: XCTestCase {
     XCTAssertNil(removeError)
   }
   
-  func testInCoreData() async {
+  func test_inCoreData() async {
     // given
     let mockRepo = Repository.mock(3)
     
     // when
     let addError = await coreDataManager.add(mockRepo)
-    XCTAssertNil(addError)
+    let inCoreData: Bool = coreDataManager.inCoreData(mockRepo)
     
     // then
-    let inCoreData: Bool = coreDataManager.inCoreData(mockRepo)
+    XCTAssertNil(addError)
     XCTAssertEqual(inCoreData, true)
   }
 }

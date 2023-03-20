@@ -12,20 +12,20 @@ import ComposableArchitecture
 
 @MainActor
 final class GitHubSearchStoreTests: XCTestCase {
-  func testBindingSearchTextToSearchQuery() async {
-    // given, when
+  func test_bindingSearchTextToSearchQuery() async {
+    // given
     let testStore = TestStore(initialState: GitHubSearchStore.State(),
                           reducer: GitHubSearchStore())
     let testSearchText = "testSearchText"
     
-    // then
+    // when, then
     await testStore.send(.set(\.$searchQuery, testSearchText)) {
       $0.searchQuery = testSearchText
     }
   }
   
-  func testSearchRepoAndResponse_Success() async {
-    // given, when
+  func test_searchRepoAndResponse_Success() async {
+    // given
     let testSearchText = "123"
     let mockRepoList = Repository.mockRepoList(testSearchText.count)
     let testSearchResults: IdentifiedArrayOf<GitHubSearchRowStore.State>
@@ -47,7 +47,7 @@ final class GitHubSearchStoreTests: XCTestCase {
       }
     }
     
-    // then
+    // when, then
     await testStore.send(.searchRepo) {
       $0.isLoading = true
     }
@@ -58,8 +58,8 @@ final class GitHubSearchStoreTests: XCTestCase {
     }
   }
   
-  func testSearchRepoAndResponse_Fail() async {
-    // given, when
+  func test_searchRepoAndResponse_Fail() async {
+    // given
     let testSearchText = "123"
     let testError = NetworkError.noDataError
     let testStore = TestStore(
@@ -73,7 +73,7 @@ final class GitHubSearchStoreTests: XCTestCase {
       }
     }
     
-    // then
+    // when, then
     await testStore.send(.searchRepo) {
       $0.isLoading = true
     }
@@ -83,8 +83,8 @@ final class GitHubSearchStoreTests: XCTestCase {
     }
   }
   
-  func testPaginationRepoAndResponse_Success() async {
-    // given, when
+  func test_paginationRepoAndResponse_Success() async {
+    // given
     let testSearchText = "123"
     let mockRepoList = Repository.mockRepoList(testSearchText.count)
     let testSearchResults: IdentifiedArrayOf<GitHubSearchRowStore.State>
@@ -109,7 +109,7 @@ final class GitHubSearchStoreTests: XCTestCase {
         }
       }
     
-    // then
+    // when, then
     await testStore.send(.paginationRepo) {
       $0.isLoading = true
       $0.currentPage = 3
@@ -121,8 +121,8 @@ final class GitHubSearchStoreTests: XCTestCase {
     }
   }
   
-  func testPaginationRepoAndResponse_Fail() async {
-    // given, when
+  func test_paginationRepoAndResponse_Fail() async {
+    // given
     let testSearchText = "123"
     let testError = NetworkError.noDataError
     let mockRepoList = Repository.mockRepoList(testSearchText.count)
@@ -144,7 +144,7 @@ final class GitHubSearchStoreTests: XCTestCase {
         }
       }
     
-    // then
+    // when, then
     await testStore.send(.paginationRepo) {
       $0.isLoading = true
       $0.currentPage = 3
@@ -152,6 +152,46 @@ final class GitHubSearchStoreTests: XCTestCase {
     
     await testStore.receive(.paginationResponse(.failure(testError))) {
       $0.isLoading = false
+    }
+  }
+  
+  func test_forEachRepos() async {
+    // given
+    let rowStoreStates: IdentifiedArrayOf<GitHubSearchRowStore.State>
+    = .init(
+      uniqueElements: [
+        GitHubSearchRowStore.State(repo: .mock(1)),
+        GitHubSearchRowStore.State(repo: .mock(2)),
+        GitHubSearchRowStore.State(repo: .mock(3))
+      ]
+    )
+    
+    let testStore = TestStore(
+      initialState: GitHubSearchStore.State(
+        searchResults: rowStoreStates
+      ),
+      reducer: GitHubSearchStore()
+    ) { testDependency in
+      testDependency.gitHubSearchClient.addToCoreData = { _ in
+        return true
+      }
+    }
+    
+    // when, then
+    await testStore.send(.forEachRepos(id: rowStoreStates[0].id,
+                                       action: .tapStarButton))
+    
+    await testStore.receive(.forEachRepos(id: rowStoreStates[0].id,
+                                          action: .toggleStarButtonState(isSuccess: true))) {
+      $0.searchResults[0].starButtonState = true
+    }
+    
+    await testStore.send(.forEachRepos(id: rowStoreStates[0].id, action: .showSafari)) {
+      let repo = $0.searchResults[0].repo
+      if let url = URL(string: repo.urlString) {
+        $0.url = url
+        $0.showSafari.toggle()
+      }
     }
   }
 }

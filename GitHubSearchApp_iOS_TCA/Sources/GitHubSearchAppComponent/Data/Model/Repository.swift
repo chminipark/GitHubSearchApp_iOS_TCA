@@ -18,17 +18,11 @@ struct Repository: Equatable, Identifiable {
     Repository(name: "repository name : \(index)",
                description: "repository description : \(index)",
                starCount: index,
-               urlString: "urlString : \(index)"
+               urlString: "https://github.com/pointfreeco/swift-composable-architecture\(index)"
     )
   }
   
   static func mockRepoList(_ count: Int = 20) -> [Repository] {
-    (1...count).map { index in
-      Repository(name: "name : \(index)",
-                 description: "description : \(index)",
-                 starCount: 100,
-                 urlString: "urlString : \(index)"
-      )
-    }
+    (1...count).map { .mock($0) }
   }
 }
