@@ -163,6 +163,8 @@
 			children = (
 				BD537BA629A8EB960024A871 /* App */,
 				BD66F96F29B61AE800313967 /* Infrastructure */,
+				BD66F97E29B7666100313967 /* Data */,
+				BD932B8029BF599500599572 /* Dependency */,
 				BD537B9F29A8E9BF0024A871 /* GitHubSearchAppComponent */,
 			);
 			path = Sources;
@@ -172,8 +174,6 @@
 			isa = PBXGroup;
 			children = (
 				BD26422729C2AF3E007A9C89 /* Reusable */,
-				BD932B8029BF599500599572 /* Dependency */,
-				BD66F97E29B7666100313967 /* Data */,
 				BD26422629C2AF09007A9C89 /* View */,
 			);
 			path = GitHubSearchAppComponent;
@@ -306,9 +306,7 @@
 		BD61777F29BB043E003002D2 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				BD61778029BB04E8003002D2 /* MyRepo.xcdatamodeld */,
 				BD932B7B29BF2D8300599572 /* Common */,
-				BD932B7329BDC28400599572 /* DataMapping */,
 				BD932B7229BDC27F00599572 /* CoreDataManager */,
 			);
 			path = CoreData;
@@ -396,6 +394,7 @@
 			isa = PBXGroup;
 			children = (
 				BD5CCE9C29ACE7E200A7FC9E /* Model */,
+				BDE8BBD929C9666F009B6231 /* CoreData */,
 				BD66F97F29B7666C00313967 /* Network */,
 			);
 			path = Data;
@@ -478,6 +477,15 @@
 				BD932B7829BDFCFA00599572 /* TestCoreDataStorage.swift */,
 			);
 			path = CoreDataTests;
+			sourceTree = "<group>";
+		};
+		BDE8BBD929C9666F009B6231 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				BD61778029BB04E8003002D2 /* MyRepo.xcdatamodeld */,
+				BD932B7329BDC28400599572 /* DataMapping */,
+			);
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

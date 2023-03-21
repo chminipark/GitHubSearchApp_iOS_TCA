@@ -12,10 +12,12 @@
 data fetch 로직 추가
 
 // footer
-Git : #1
+Git: #1
 ```
 
-## 2. Commit Type
+## 3. subject
+- [Tag Name] : Description
+#### 3-1. Commit Type
 |Tag Name|Description|
 |---|---|
 |Feat|새로운 기능을 추가|
@@ -25,9 +27,6 @@ Git : #1
 |Test|테스트 코드, 리펙토링 테스트 코드 추가, Production Code(실제로 사용하는 코드) 변경 없음|
 |Docs|문서 수정|
 |Chore|빌드 업무 수정, 패키지 매니저 수정, 패키지 관리자 구성 등 업데이트, Production Code 변경 없음|
-
-## 3. subject
-- [Tag Name] : Description
 
 ## 4. body
 - 선택사항이기 때문에 모든 커밋에 본문내용을 작성할 필요는 없다.
